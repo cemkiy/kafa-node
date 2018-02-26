@@ -1,0 +1,13 @@
+{
+  "name": "kafa-node",
+  "version": "0.1.0",
+  "description": "kafa backend",
+  "main": "index.js",
+  "repository": "https://github.com/cemkiy/kafa-node.git",
+  "author": "cemkiy <cemekiy@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "graphql": "^0.13.1",
+    "mongoose": "^5.0.7"
+  }
+}
