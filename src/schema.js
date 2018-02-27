@@ -5,14 +5,11 @@ const Torrents = require('./data/torrents');
 const Users = require('./data/users');
 
 let {
-  // These are the basic GraphQL types need in this tutorial
   GraphQLString,
   GraphQLInt,
   GraphQLList,
   GraphQLObjectType,
-  // This is used to create required fileds and arguments
   GraphQLNonNull,
-  // This is the class we need to create the schema
   GraphQLSchema,
 } = require('graphql');
 
@@ -27,15 +24,6 @@ const UserType = new GraphQLObjectType({
   })
 });
 
-const StatusType = new GraphQLObjectType({
-  name: "Status",
-  description: "This represent a status",
-  fields: () => ({
-    leechers:{type: GraphQLInt},
-    seeders:{type: GraphQLInt}
-  })
-});
-
 const TorrentType = new GraphQLObjectType({
   name: "Torrent",
   description: "This represent a torrent",
@@ -46,6 +34,14 @@ const TorrentType = new GraphQLObjectType({
     status: {
       type: StatusType
     },
+    status: { type: new GraphQLObjectType({
+            name: 'StatusType',
+            fields: () => ({
+              leechers:{type: GraphQLInt},
+              seeders:{type: GraphQLInt}
+            })
+        }),
+    }
     user: {
       type: UserType,
       resolve: function(torrent) {
@@ -56,8 +52,8 @@ const TorrentType = new GraphQLObjectType({
 });
 
 // This is the Root Query
-const TorrentQueryRootType = new GraphQLObjectType({
-  name: 'TorrentAppSchema',
+const QueryRootType = new GraphQLObjectType({
+  name: 'AppSchema',
   description: "Torrent Schema Query Root",
   fields: () => ({
     torrents: {
@@ -66,17 +62,24 @@ const TorrentQueryRootType = new GraphQLObjectType({
       resolve: function() {
         return Torrents
       }
+    },
+    users: {
+      type: new GraphQLList(UserType),
+      description: "List of all Users",
+      resolve: function() {
+        return Users
+      }
     }
   })
 });
 
 // This is the schema declaration
-const TorrentAppSchema = new GraphQLSchema({
-  query: TorrentQueryRootType
+const AppSchema = new GraphQLSchema({
+  query: QueryRootType
   // If you need to create or updata a datasource,
   // you use mutations. Note:
   // mutations will not be explored in this post.
   // mutation: TorrentMutationRootType
 });
 
-module.exports = TorrentAppSchema;
+module.exports = AppSchema;
