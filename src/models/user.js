@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
 // Kafa Schema
 const KafaSchema = mongoose.Schema({
@@ -18,7 +18,7 @@ const UserSchema = mongoose.Schema({
   username: {
     type: String,
     required: true
-  }
+  },
   email: {
     type: String,
     required: true
@@ -60,24 +60,24 @@ const UserSchema = mongoose.Schema({
 const User = module.exports = mongoose.model('User', UserSchema);
 
 // Set Password User
-module.exports.setPassword = function(user, password, callback) {
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(password, salt, (err, hash) => {
-      if (err)
-        throw err;
-      user.password = hash;
-      user.forgot_password_token = "";
-      user.save(callback);
-    });
-  })
-}
-
-// Compare Password
-module.exports.comparePassword = function(password, hash, callback) {
-  bcrypt.compare(password, hash, (err, isMatch) => {
-    if (err)
-      throw err;
-
-    callback(null, isMatch);
-  })
-}
+// module.exports.setPassword = function(user, password, callback) {
+//   bcrypt.genSalt(10, (err, salt) => {
+//     bcrypt.hash(password, salt, (err, hash) => {
+//       if (err)
+//         throw err;
+//       user.password = hash;
+//       user.forgot_password_token = "";
+//       user.save(callback);
+//     });
+//   })
+// }
+//
+// // Compare Password
+// module.exports.comparePassword = function(password, hash, callback) {
+//   bcrypt.compare(password, hash, (err, isMatch) => {
+//     if (err)
+//       throw err;
+//
+//     callback(null, isMatch);
+//   })
+// }

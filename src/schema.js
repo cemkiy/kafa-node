@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 // Schemas get data from JSON Arrays in the respective files.
 const Torrents = require('./data/torrents');
-const Users = require('./data/users');
+const User = require('./models/user');
 
 let {
   GraphQLString,
@@ -31,9 +31,6 @@ const TorrentType = new GraphQLObjectType({
     id: {type: new GraphQLNonNull(GraphQLString)},
     name: {type: new GraphQLNonNull(GraphQLString)},
     size: {type: GraphQLInt},
-    status: {
-      type: StatusType
-    },
     status: { type: new GraphQLObjectType({
             name: 'StatusType',
             fields: () => ({
@@ -41,7 +38,7 @@ const TorrentType = new GraphQLObjectType({
               seeders:{type: GraphQLInt}
             })
         }),
-    }
+    },
     user: {
       type: UserType,
       resolve: function(torrent) {
@@ -66,8 +63,15 @@ const QueryRootType = new GraphQLObjectType({
     users: {
       type: new GraphQLList(UserType),
       description: "List of all Users",
-      resolve: function() {
-        return Users
+      args: {
+        id: {
+          name: 'id',
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
+      resolve: function(parent, args, ast) {
+        console.log(args);
+        return User.find();
       }
     }
   })
