@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 // Language Schema
 const LanguageSchema = mongoose.Schema({
-  dubbing:{
+  audios:{
     type: [String]
   },
   subtitles:{

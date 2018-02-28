@@ -1,8 +1,10 @@
-const _ = require('lodash');
+// Mongoose schemas
+const TorrentModel = require('./models/torrent');
+const UserModel = require('./models/user');
 
-// Schemas get data from JSON Arrays in the respective files.
-const Torrents = require('./data/torrents');
-const User = require('./models/user');
+// Graphql Types
+const TorrentType = require('./types/torrent');
+const UserType = require('./types/user');
 
 let {
   GraphQLString,
@@ -10,43 +12,8 @@ let {
   GraphQLList,
   GraphQLObjectType,
   GraphQLNonNull,
-  GraphQLSchema,
+  GraphQLSchema
 } = require('graphql');
-
-const UserType = new GraphQLObjectType({
-  name: "User",
-  description: "This represent an user",
-  fields: () => ({
-    id: {type: new GraphQLNonNull(GraphQLString)},
-    username: {type: new GraphQLNonNull(GraphQLString)},
-    email: {type: new GraphQLNonNull(GraphQLString)},
-    password: {type: new GraphQLNonNull(GraphQLString)}
-  })
-});
-
-const TorrentType = new GraphQLObjectType({
-  name: "Torrent",
-  description: "This represent a torrent",
-  fields: () => ({
-    id: {type: new GraphQLNonNull(GraphQLString)},
-    name: {type: new GraphQLNonNull(GraphQLString)},
-    size: {type: GraphQLInt},
-    status: { type: new GraphQLObjectType({
-            name: 'StatusType',
-            fields: () => ({
-              leechers:{type: GraphQLInt},
-              seeders:{type: GraphQLInt}
-            })
-        }),
-    },
-    user: {
-      type: UserType,
-      resolve: function(torrent) {
-        return _.find(Users, u => u.id == torrent.user_id);
-      }
-    }
-  })
-});
 
 // This is the Root Query
 const QueryRootType = new GraphQLObjectType({
@@ -80,10 +47,7 @@ const QueryRootType = new GraphQLObjectType({
 // This is the schema declaration
 const AppSchema = new GraphQLSchema({
   query: QueryRootType
-  // If you need to create or updata a datasource,
-  // you use mutations. Note:
-  // mutations will not be explored in this post.
-  // mutation: TorrentMutationRootType
+  // mutation: MutationRootType
 });
 
 module.exports = AppSchema;
