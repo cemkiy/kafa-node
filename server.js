@@ -1,6 +1,7 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
-const schema = require('./src/schema.js');
+const userSchema = require('./src/user/schema.js');
+const torrentSchema = require('./src/torrent/schema.js');
 const mongoose = require('mongoose');
 
 
@@ -20,8 +21,14 @@ mongoose.connection.on('error', (err) => {
 
 let port = 3000;
 const app = express();
-app.use('/', graphqlHTTP({
-  schema: schema,
+
+app.use('/users', graphqlHTTP({
+  schema: userSchema,
+  graphiql: true //set to false if you don't want graphiql enabled
+}));
+
+app.use('/torrents', graphqlHTTP({
+  schema: torrentSchema,
   graphiql: true //set to false if you don't want graphiql enabled
 }));
 

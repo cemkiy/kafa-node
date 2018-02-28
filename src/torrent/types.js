@@ -55,11 +55,11 @@ const TorrentType = new GraphQLObjectType({
     },
     screens:{ type: new graphql.GraphQLList(GraphQLString)},
     comments:{ type: new graphql.GraphQLList(CommentType)},
-    tags:{ type: new GraphQLObjectType({
+    tag:{ type: new GraphQLObjectType({
             name: 'TagType',
             fields: () => ({
               name:{ type: new GraphQLNonNull(GraphQLString)},
-              categorie:{ type: new GraphQLNonNull(GraphQLString)}
+              categories:{ type: new graphql.GraphQLList(GraphQLString)}
             })
         })
     },

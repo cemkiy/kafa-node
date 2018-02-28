@@ -59,6 +59,64 @@ const UserSchema = mongoose.Schema({
 
 const User = module.exports = mongoose.model('User', UserSchema);
 
+module.exports.list = function(filter, callback) {
+  let limit = 25
+  let skip = 0
+  let sort = {}
+
+  if (filter.limit)
+    limit = filter.limit;
+
+  if (filter.skip)
+    skip = filter.skip;
+
+  if (filter.sort_field) {
+    if (filter.sort_type) {
+      sort[filter.sort_field] = filter.sort_type;
+    } else {
+      sort[filter.sort_field] = 1;
+    }
+  } else {
+    sort["created_at"] = 1;
+  }
+
+  query = {
+    deleted_at: null
+  }
+
+  if (filter.username)
+    query["username"] = {
+      "$regex": util.format(".*%s.*", filter.username),
+      "$options": 'i'
+    };
+
+  if (filter.email)
+    query["email"] = {
+      "$regex": util.format(".*%s.*", filter.email),
+      "$options": 'i'
+    };
+
+  if (filter.created_at_from || filter.created_at_to) {
+    created_at_query = {}
+    if (filter.created_at_from)
+      created_at_query["$gt"] = new Date(filter.created_at_from);
+    if (filter.created_at_to)
+      created_at_query["$lt"] = new Date(filter.created_at_to);
+    query["created_at"] = created_at_query;
+  }
+
+  if (filter.updated_at_from || filter.updated_at_to) {
+    updated_at_query = {}
+    if (filter.updated_at_from)
+      updated_at_query["$gt"] = new Date(filter.updated_at_from);
+    if (filter.updated_at_to)
+      updated_at_query["$lt"] = new Date(filter.updated_at_to);
+    query["updated_at"] = updated_at_query;
+  }
+
+  return User.find(query, callback).skip(skip).limit(limit).sort(sort);
+}
+
 // Set Password User
 // module.exports.setPassword = function(user, password, callback) {
 //   bcrypt.genSalt(10, (err, salt) => {
