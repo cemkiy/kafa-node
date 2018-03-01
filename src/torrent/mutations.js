@@ -62,6 +62,26 @@ const TorrentMutationRootType = new GraphQLObjectType({
       });
         return result;
         }
+    },
+    deleteTorrent: {
+    type: GraphQLString,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLString),
+      }
+    },
+    resolve: async (rootValue, args) => {
+      const result = await new Promise((resolve) => {
+        setTimeout(() =>
+          resolve(
+            return torrentModel.findByIdAndRemove(args.id, (err, torrent) => {
+              if (err) return "failure";
+              return "deleted"
+          });
+          ), 100);
+      });
+        return result;
+        }
     }
   })
 });

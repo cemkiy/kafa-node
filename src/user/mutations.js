@@ -62,6 +62,26 @@ const UserMutationRootType = new GraphQLObjectType({
       });
         return result;
         }
+    },
+    deleteUser: {
+    type: GraphQLString,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLString),
+      }
+    },
+    resolve: async (rootValue, args) => {
+      const result = await new Promise((resolve) => {
+        setTimeout(() =>
+          resolve(
+            return userModel.findByIdAndRemove(args.id, (err, user) => {
+              if (err) return "failure";
+              return "deleted"
+          });
+          ), 100);
+      });
+        return result;
+        }
     }
   })
 });
