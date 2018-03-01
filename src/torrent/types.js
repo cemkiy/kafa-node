@@ -43,6 +43,14 @@ const LanguageType = new GraphQLObjectType({
           })
   });
 
+const StatusType = new GraphQLObjectType({
+          name: 'StatusType',
+          fields: () => ({
+            leechers:{type: GraphQLInt},
+            seeders:{type: GraphQLInt}
+          })
+  });
+
 
 // TorrentType for graphql
 const TorrentType = new GraphQLObjectType({
@@ -61,14 +69,7 @@ const TorrentType = new GraphQLObjectType({
     size:{type: new GraphQLNonNull(GraphQLInt)},
     info_link:{type: new GraphQLNonNull(GraphQLString)},
     info_hash:{type: new GraphQLNonNull(GraphQLString)},
-    status: { type: new GraphQLObjectType({
-            name: 'StatusType',
-            fields: () => ({
-              leechers:{type: GraphQLInt},
-              seeders:{type: GraphQLInt}
-            })
-        })
-    },
+    status: {type: new GraphQLNonNull(StatusType)},
     screens:{ type: new graphql.GraphQLList(GraphQLString)},
     comments:{ type: new graphql.GraphQLList(CommentType)},
     tag:{ type: new GraphQLNonNull(TagType)},
@@ -92,6 +93,7 @@ const TorrentInputType = new GraphQLObjectType({
     info_hash:{ type: new graphql.GraphQLNonNull(GraphQLString)},
     screens:{ type: new graphql.GraphQLList(GraphQLString)},
     tag:{ type: new graphql.GraphQLNonNull(TagType)},
-    languages:{ type: new graphql.GraphQLNonNull(LanguageType)}
+    languages:{ type: new graphql.GraphQLNonNull(LanguageType)},
+    status: {type: new GraphQLNonNull(StatusType)}
   })
 });

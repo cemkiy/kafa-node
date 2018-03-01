@@ -45,6 +45,23 @@ const TorrentMutationRootType = new GraphQLObjectType({
       });
         return result;
         }
+    },
+    updateTorrent: {
+    type: TorrentType,
+    args: {
+      input: {
+        type: new GraphQLNonNull(TorrentInputType),
+      },
+    },
+    resolve: async (rootValue, { input }) => {
+      const result = await new Promise((resolve) => {
+        setTimeout(() =>
+          resolve(
+            return torrentModel.create(input);
+          ), 100);
+      });
+        return result;
+        }
     }
   })
 });

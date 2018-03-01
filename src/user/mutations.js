@@ -37,13 +37,27 @@ const UserMutationRootType = new GraphQLObjectType({
       },
     },
     resolve: async (rootValue, { input }) => {
-      if (!isEmail(input.email)) {
-       throw new Error('The email is not in a valid format');
-      }
       const result = await new Promise((resolve) => {
         setTimeout(() =>
           resolve(
             return userModel.create(input);
+          ), 100);
+      });
+        return result;
+        }
+    },
+    updateUser: {
+    type: UserType,
+    args: {
+      input: {
+        type: new GraphQLNonNull(UserInputType),
+      },
+    },
+    resolve: async (rootValue, { input }) => {
+      const result = await new Promise((resolve) => {
+        setTimeout(() =>
+          resolve(
+            return torrentModel.update(input);
           ), 100);
       });
         return result;

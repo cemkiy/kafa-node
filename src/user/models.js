@@ -131,6 +131,16 @@ module.exports.list = function(filter, callback) {
   return User.find(query, callback).skip(skip).limit(limit).sort(sort);
 }
 
+// Update User
+module.exports.update = function(id, updateUser, callback) {
+  User.findById(id, function(err, user) {
+    if (err) return handleError(err);
+    updateUser.updated_at = new Date();
+    user.set(updateUser);
+    user.save(callback);
+  });
+}
+
 // Set Password User
 // module.exports.setPassword = function(user, password, callback) {
 //   bcrypt.genSalt(10, (err, salt) => {

@@ -220,3 +220,13 @@ module.exports.list = function(filter, callback) {
 
   return Torrent.find(query, callback).skip(skip).limit(limit).sort(sort);
 }
+
+// Update Torrent
+module.exports.update = function(id, updateTorrent, callback) {
+  Torrent.findById(id, function(err, torrent) {
+    if (err) return handleError(err);
+    updateTorrent.updated_at = new Date();
+    torrent.set(updateTorrent);
+    torrent.save(callback);
+  });
+}
