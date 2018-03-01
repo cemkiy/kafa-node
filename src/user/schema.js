@@ -10,8 +10,8 @@ let {
 
 // This is the schema declaration
 const UserAppSchema = new GraphQLSchema({
-  query: UserQueryRootType
-  // mutation: MutationRootType
+  query: UserQueryRootType,
+  mutation: UserMutationRootType
 });
 
 module.exports = UserAppSchema;

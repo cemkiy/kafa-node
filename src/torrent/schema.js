@@ -10,8 +10,8 @@ let {
 
 // This is the schema declaration
 const TorrentAppSchema = new GraphQLSchema({
-  query: TorrentQueryRootType
-  // mutation: MutationRootType
+  query: TorrentQueryRootType,
+  mutation: TorrentMutationRootType
 });
 
 module.exports = TorrentAppSchema;

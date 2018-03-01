@@ -59,6 +59,20 @@ const UserSchema = mongoose.Schema({
 
 const User = module.exports = mongoose.model('User', UserSchema);
 
+// Create User
+module.exports.create = function(newUser, callback) {
+  // bcrypt.genSalt(10, (err, salt) => {
+  //   bcrypt.hash(newUser.password, salt, (err, hash) => {
+  //     if (err)
+  //       throw err;
+  //     newUser.password = hash;
+  //     newUser.email_activation_key = crypto.randomBytes(20).toString('hex');
+  //     newUser.save(callback);
+  //   });
+  // })
+  newUser.save(callback);
+}
+
 module.exports.list = function(filter, callback) {
   let limit = 25
   let skip = 0

@@ -104,6 +104,19 @@ const TorrentQueryRootType = new GraphQLObjectType({
           return torrents;
         });
       }
-    }
+    },
+    torrentById: {
+      type: new GraphQLNonNull(torrentType),
+      description: "Get torrent by id",
+      args: {
+        id: {
+          name: 'id',
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
+      resolve: function(parent, args, ast) {
+        return torrentModel.findById(args.id);
+      }
+    },
   })
 });

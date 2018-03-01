@@ -72,6 +72,45 @@ const UserQueryRootType = new GraphQLObjectType({
           return users;
         });
       }
+    },
+    userById: {
+      type: new GraphQLNonNull(userType),
+      description: "Get user by id",
+      args: {
+        id: {
+          name: 'id',
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
+      resolve: function(parent, args, ast) {
+        return userModel.findById(args.id);
+      }
+    },
+    userByUsername: {
+      type: new GraphQLNonNull(userType),
+      description: "Get user by username",
+      args: {
+        id: {
+          name: 'username',
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
+      resolve: function(parent, args, ast) {
+        return userModel.findOne(args);
+      }
+    },
+    userByEmail: {
+      type: new GraphQLNonNull(userType),
+      description: "Get user by email",
+      args: {
+        id: {
+          name: 'email',
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
+      resolve: function(parent, args, ast) {
+        return userModel.findOne(args);
+      }
     }
   })
 });

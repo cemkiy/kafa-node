@@ -25,7 +25,7 @@ const KafaType = { type: new GraphQLObjectType({
     })
 }
 
-// UserType for graphql
+// UserType for query
 const UserType = new GraphQLObjectType({
   name: "UserType",
   description: "This represent an user",
@@ -38,5 +38,17 @@ const UserType = new GraphQLObjectType({
     created_at: {type: new GraphQLNonNull(GraphQLString)},
     updated_at: {type: new GraphQLNonNull(GraphQLString)},
     deleted_at: {type: new GraphQLNonNull(GraphQLString)}
+  })
+});
+
+// UserInputType for mutation
+const UserInputType = new GraphQLObjectType({
+  name: "UserInputType",
+  description: "This represent an user",
+  fields: () => ({
+    username: {type: new GraphQLNonNull(GraphQLString)},
+    email: {type: new GraphQLNonNull(GraphQLString)},
+    password: {type: new GraphQLNonNull(GraphQLString)},
+    birthday: {type: new GraphQLNonNull(GraphQLString)}
   })
 });

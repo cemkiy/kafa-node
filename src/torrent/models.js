@@ -122,6 +122,11 @@ const TorrentSchema = mongoose.Schema({
 
 const Torrent = module.exports = mongoose.model('Torrent', TorrentSchema);
 
+// Create Torrent
+module.exports.create = function(newTorrent, callback) {
+  newTorrent.save(callback);
+}
+
 module.exports.list = function(filter, callback) {
   let limit = 25
   let skip = 0

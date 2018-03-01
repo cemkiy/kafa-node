@@ -27,6 +27,22 @@ const CommentType = new GraphQLObjectType({
           })
   });
 
+const TagType = new GraphQLObjectType({
+          name: 'TagType',
+          fields: () => ({
+            name:{ type: new GraphQLNonNull(GraphQLString)},
+            categories:{ type: new graphql.GraphQLList(GraphQLString)}
+          })
+  });
+
+const LanguageType = new GraphQLObjectType({
+          name: 'LanguageType',
+          fields: () => ({
+            audios:{ type: new graphql.GraphQLList(GraphQLString)},
+            subtitles:{ type: new graphql.GraphQLList(GraphQLString)}
+          })
+  });
+
 
 // TorrentType for graphql
 const TorrentType = new GraphQLObjectType({
@@ -55,25 +71,27 @@ const TorrentType = new GraphQLObjectType({
     },
     screens:{ type: new graphql.GraphQLList(GraphQLString)},
     comments:{ type: new graphql.GraphQLList(CommentType)},
-    tag:{ type: new GraphQLObjectType({
-            name: 'TagType',
-            fields: () => ({
-              name:{ type: new GraphQLNonNull(GraphQLString)},
-              categories:{ type: new graphql.GraphQLList(GraphQLString)}
-            })
-        })
-    },
-    languages:{ type: new GraphQLObjectType({
-            name: 'LanguageType',
-            fields: () => ({
-              audios:{ type: new graphql.GraphQLList(GraphQLString)},
-              subtitles:{ type: new graphql.GraphQLList(GraphQLString)}
-            })
-        })
-    },
+    tag:{ type: new GraphQLNonNull(TagType)},
+    languages:{ type: new GraphQLNonNull(LanguageType)},
     kafa:new GraphQLNonNull(GraphQLInt)},
-    created_at:{ type: new graphql.GraphQLList(GraphQLString)},
-    updated_at:{ type: new graphql.GraphQLList(GraphQLString)},
-    deleted_at:{ type: new graphql.GraphQLList(GraphQLString)}
+    created_at:{ type: new graphql.GraphQLNonNull(GraphQLString)},
+    updated_at:{ type: new graphql.GraphQLNonNull(GraphQLString)},
+    deleted_at:{ type: new graphql.GraphQLNonNull(GraphQLString)}
+  })
+});
+
+// TorrentInputType for mutation
+const TorrentInputType = new GraphQLObjectType({
+  name: "TorrentInputType",
+  description: "This represent an torrent",
+  fields: () => ({
+    name:{ type: new graphql.GraphQLNonNull(GraphQLString)},
+    description:{ type: new graphql.GraphQLNonNull(GraphQLString)},
+    size:{ type: new graphql.GraphQLNonNull(GraphQLInt)},
+    info_link:{ type: new graphql.GraphQLNonNull(GraphQLString)},
+    info_hash:{ type: new graphql.GraphQLNonNull(GraphQLString)},
+    screens:{ type: new graphql.GraphQLList(GraphQLString)},
+    tag:{ type: new graphql.GraphQLNonNull(TagType)},
+    languages:{ type: new graphql.GraphQLNonNull(LanguageType)}
   })
 });
