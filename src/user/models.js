@@ -1,18 +1,6 @@
 const mongoose = require('mongoose');
 // const bcrypt = require('bcryptjs');
 
-// Kafa Schema
-const KafaSchema = mongoose.Schema({
-  torrent_id:{
-    type: String,
-    required: true
-  },
-  kafa_count:{
-    type: Number,
-    default: 0
-  }
-});
-
 // User Schema
 const UserSchema = mongoose.Schema({
   username: {
@@ -34,10 +22,7 @@ const UserSchema = mongoose.Schema({
   birthday: {
     type: Date,
     required: true
-  },
-  kafas: {
-    type: [KafaSchema]
-  },
+  }
   email_activation_key: {
     type: String
   },

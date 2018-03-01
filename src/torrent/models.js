@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
 // Language Schema
 const LanguageSchema = mongoose.Schema({
@@ -33,9 +33,6 @@ const CommentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  subcomment:{
-    type: [CommentSchema]
-  },
   created_at: {
     type: Date,
     default: Date.now
@@ -48,6 +45,8 @@ const CommentSchema = mongoose.Schema({
     type: Date
   }
 });
+
+CommentSchema.add({ subcomments: [CommentSchema] });
 
 // Tag Schema
 const TagSchema = mongoose.Schema({

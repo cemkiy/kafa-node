@@ -1,5 +1,6 @@
 // Mongoose schemas
-const TorrentModel = require('./models/torrent');
+const torrentModel = require('../torrent/models.js');
+
 
 let {
   GraphQLString,
@@ -7,23 +8,26 @@ let {
   GraphQLList,
   GraphQLObjectType,
   GraphQLNonNull,
-  GraphQLSchema
+  GraphQLSchema,
+  GraphQLInputObjectType
 } = require('graphql');
 
-const KafaType = { type: new GraphQLObjectType({
+console.log(torrentTypes);
+
+
+const KafaType = new GraphQLObjectType({
         name: 'KafaType',
         description: "This represent a kafa",
         fields: () => ({
           torrent: {
-            type: TorrentType,
+            type: new GraphQLNonNull(torrentTypes.KafaType),
             resolve: function(kafa) {
-              return  TorrentModel.findById(kafa.torrent_id);
+              return  torrentModel.findById(kafa.torrent_id);
             }
           },
           kafa_count:{type: new GraphQLNonNull(GraphQLInt)}
         })
     })
-}
 
 // UserType for query
 const UserType = new GraphQLObjectType({
@@ -42,7 +46,7 @@ const UserType = new GraphQLObjectType({
 });
 
 // UserInputType for mutation
-const UserInputType = new GraphQLObjectType({
+const UserInputType = new GraphQLInputObjectType({
   name: "UserInputType",
   description: "This represent an user",
   fields: () => ({
@@ -52,3 +56,9 @@ const UserInputType = new GraphQLObjectType({
     birthday: {type: new GraphQLNonNull(GraphQLString)}
   })
 });
+
+module.exports = {
+  KafaType,
+  UserType,
+  UserInputType
+}

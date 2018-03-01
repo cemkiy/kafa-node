@@ -1,10 +1,10 @@
 // Mongoose schemas
-const torrentModel = require('./torrent/model.js');
-const userModel = require('./user/model.js');
+const torrentModel = require('./models.js');
+const userModel = require('../user/models.js');
 
 // Graphql Types
-const torrentType = require('./torrent/type.js');
-const userType = require('./user/type.js');
+const torrentTypes = require('./types.js');
+const userTypes = require('../user/types.js');
 
 let {
   GraphQLString,
@@ -25,39 +25,45 @@ let {
 // }
 
 // This is the Root Mutation
-const TorrentMutationRootType = new GraphQLObjectType({
-  name: 'TorrentAppSchema',
+const TorrentMutationRootType = module.exports = new GraphQLObjectType({
+  name: 'TorrentMutationSchema',
   description: "Torrent Schema Mutation Root",
   fields: () => ({
     createTorrent: {
-    type: TorrentType,
+    type: torrentTypes.TorrentType,
     args: {
       input: {
-        type: new GraphQLNonNull(TorrentInputType),
+        type: new GraphQLNonNull(torrentTypes.TorrentInputType),
       },
     },
     resolve: async (rootValue, { input }) => {
       const result = await new Promise((resolve) => {
         setTimeout(() =>
           resolve(
-            return torrentModel.create(input);
+            torrentModel.create(input, (err, torrent) => {
+              if(err) throw err;
+              return torrent;
+            })
           ), 100);
       });
         return result;
         }
     },
     updateTorrent: {
-    type: TorrentType,
+    type: torrentTypes.TorrentType,
     args: {
       input: {
-        type: new GraphQLNonNull(TorrentInputType),
+        type: new GraphQLNonNull(torrentTypes.TorrentInputType),
       },
     },
     resolve: async (rootValue, { input }) => {
       const result = await new Promise((resolve) => {
         setTimeout(() =>
           resolve(
-            return torrentModel.create(input);
+            torrentModel.update(args.id, args.input, (err, updatedTorrent) => {
+              if(err) throw err;
+              return updatedTorrent;
+            })
           ), 100);
       });
         return result;
@@ -74,10 +80,10 @@ const TorrentMutationRootType = new GraphQLObjectType({
       const result = await new Promise((resolve) => {
         setTimeout(() =>
           resolve(
-            return torrentModel.findByIdAndRemove(args.id, (err, torrent) => {
+             torrentModel.findByIdAndRemove(args.id, (err, torrent) => {
               if (err) return "failure";
               return "deleted"
-          });
+          })
           ), 100);
       });
         return result;

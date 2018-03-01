@@ -1,10 +1,10 @@
 // Mongoose schemas
-const torrentModel = require('./torrent/model.js');
-const userModel = require('./user/model.js');
+const torrentModel = require('./models.js');
+const userModel = require('../user/models.js');
 
 // Graphql Types
-const torrentType = require('./torrent/type.js');
-const userType = require('./user/type.js');
+const torrentTypes = require('./types.js');
+const userTypes = require('../user/types.js');
 
 let {
   GraphQLString,
@@ -16,12 +16,12 @@ let {
 } = require('graphql');
 
 // This is the Root Query
-const TorrentQueryRootType = new GraphQLObjectType({
-  name: 'TorrentAppSchema',
+const TorrentQueryRootType = module.exports = new GraphQLObjectType({
+  name: 'TorrentQuerySchema',
   description: "Torrent Schema Query Root",
   fields: () => ({
     torrents: {
-      type: new GraphQLList(torrentType),
+      type: new GraphQLList(torrentTypes.TorrentType),
       description: "List of all Torrents",
       args: {
         name: {
@@ -106,7 +106,7 @@ const TorrentQueryRootType = new GraphQLObjectType({
       }
     },
     torrentById: {
-      type: new GraphQLNonNull(torrentType),
+      type: new GraphQLNonNull(torrentTypes.TorrentType),
       description: "Get torrent by id",
       args: {
         id: {

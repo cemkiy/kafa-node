@@ -1,5 +1,8 @@
 // Mongoose schemas
-const UserModel = require('./models/user');
+const userModel = require('../user/models.js');
+
+// Graphql Types
+const userTypes = require('../user/types.js');
 
 let {
   GraphQLString,
@@ -7,23 +10,24 @@ let {
   GraphQLList,
   GraphQLObjectType,
   GraphQLNonNull,
-  GraphQLSchema
+  GraphQLSchema,
+  GraphQLInputObjectType
 } = require('graphql');
 
 const CommentType = new GraphQLObjectType({
           name: 'CommentType',
           fields: () => ({
             user: {
-              type: UserType,
+              type: new GraphQLNonNull(userTypes.UserType),
               resolve: function(comment) {
-                return  UserModel.findById(comment.user_id);
+                return  userModel.findById(comment.user_id);
               }
             },
             text:{ type: new GraphQLNonNull(GraphQLString)},
-            subcomments: { type: new graphql.GraphQLList(CommentType)},
-            created_at:{ type: new graphql.GraphQLList(GraphQLString)},
-            updated_at:{ type: new graphql.GraphQLList(GraphQLString)},
-            deleted_at:{ type: new graphql.GraphQLList(GraphQLString)}
+            subcomments: { type: new GraphQLList(CommentType)},
+            created_at:{ type: new GraphQLList(GraphQLString)},
+            updated_at:{ type: new GraphQLList(GraphQLString)},
+            deleted_at:{ type: new GraphQLList(GraphQLString)}
           })
   });
 
@@ -31,15 +35,15 @@ const TagType = new GraphQLObjectType({
           name: 'TagType',
           fields: () => ({
             name:{ type: new GraphQLNonNull(GraphQLString)},
-            categories:{ type: new graphql.GraphQLList(GraphQLString)}
+            categories:{ type: new GraphQLList(GraphQLString)}
           })
   });
 
 const LanguageType = new GraphQLObjectType({
           name: 'LanguageType',
           fields: () => ({
-            audios:{ type: new graphql.GraphQLList(GraphQLString)},
-            subtitles:{ type: new graphql.GraphQLList(GraphQLString)}
+            audios:{ type: new GraphQLList(GraphQLString)},
+            subtitles:{ type: new GraphQLList(GraphQLString)}
           })
   });
 
@@ -51,6 +55,30 @@ const StatusType = new GraphQLObjectType({
           })
   });
 
+  const TagInputType = new GraphQLInputObjectType({
+            name: 'TagInputType',
+            fields: () => ({
+              name:{ type: new GraphQLNonNull(GraphQLString)},
+              categories:{ type: new GraphQLList(GraphQLString)}
+            })
+    });
+
+  const LanguageInputType = new GraphQLInputObjectType({
+            name: 'LanguageInputType',
+            fields: () => ({
+              audios:{ type: new GraphQLList(GraphQLString)},
+              subtitles:{ type: new GraphQLList(GraphQLString)}
+            })
+    });
+
+  const StatusInputType = new GraphQLInputObjectType({
+            name: 'StatusInputType',
+            fields: () => ({
+              leechers:{type: GraphQLInt},
+              seeders:{type: GraphQLInt}
+            })
+    });
+
 
 // TorrentType for graphql
 const TorrentType = new GraphQLObjectType({
@@ -60,9 +88,9 @@ const TorrentType = new GraphQLObjectType({
     id: {type: new GraphQLNonNull(GraphQLString)},
     name:{type: new GraphQLNonNull(GraphQLString)},
     user: {
-      type: UserType,
+      type: new GraphQLNonNull(userTypes.UserType),
       resolve: function(torrent) {
-        return  UserModel.findById(torrent.user_id);
+        return  userModel.findById(torrent.user_id);
       }
     },
     description:{type: new GraphQLNonNull(GraphQLString)},
@@ -70,30 +98,39 @@ const TorrentType = new GraphQLObjectType({
     info_link:{type: new GraphQLNonNull(GraphQLString)},
     info_hash:{type: new GraphQLNonNull(GraphQLString)},
     status: {type: new GraphQLNonNull(StatusType)},
-    screens:{ type: new graphql.GraphQLList(GraphQLString)},
-    comments:{ type: new graphql.GraphQLList(CommentType)},
+    screens:{ type: new GraphQLList(GraphQLString)},
+    comments:{ type: new GraphQLList(CommentType)},
     tag:{ type: new GraphQLNonNull(TagType)},
     languages:{ type: new GraphQLNonNull(LanguageType)},
-    kafa:new GraphQLNonNull(GraphQLInt)},
-    created_at:{ type: new graphql.GraphQLNonNull(GraphQLString)},
-    updated_at:{ type: new graphql.GraphQLNonNull(GraphQLString)},
-    deleted_at:{ type: new graphql.GraphQLNonNull(GraphQLString)}
+    kafa:{type: new GraphQLNonNull(GraphQLInt)},
+    created_at:{ type: new GraphQLNonNull(GraphQLString)},
+    updated_at:{ type: new GraphQLNonNull(GraphQLString)},
+    deleted_at:{ type: new GraphQLNonNull(GraphQLString)}
   })
 });
 
 // TorrentInputType for mutation
-const TorrentInputType = new GraphQLObjectType({
+const TorrentInputType = new GraphQLInputObjectType({
   name: "TorrentInputType",
   description: "This represent an torrent",
   fields: () => ({
-    name:{ type: new graphql.GraphQLNonNull(GraphQLString)},
-    description:{ type: new graphql.GraphQLNonNull(GraphQLString)},
-    size:{ type: new graphql.GraphQLNonNull(GraphQLInt)},
-    info_link:{ type: new graphql.GraphQLNonNull(GraphQLString)},
-    info_hash:{ type: new graphql.GraphQLNonNull(GraphQLString)},
-    screens:{ type: new graphql.GraphQLList(GraphQLString)},
-    tag:{ type: new graphql.GraphQLNonNull(TagType)},
-    languages:{ type: new graphql.GraphQLNonNull(LanguageType)},
-    status: {type: new GraphQLNonNull(StatusType)}
+    name:{ type: new GraphQLNonNull(GraphQLString)},
+    description:{ type: new GraphQLNonNull(GraphQLString)},
+    size:{ type: new GraphQLNonNull(GraphQLInt)},
+    info_link:{ type: new GraphQLNonNull(GraphQLString)},
+    info_hash:{ type: new GraphQLNonNull(GraphQLString)},
+    screens:{ type: new GraphQLList(GraphQLString)},
+    tag:{ type: new GraphQLNonNull(TagInputType)},
+    languages:{ type: new GraphQLNonNull(LanguageInputType)},
+    status: {type: new GraphQLNonNull(StatusInputType)}
   })
 });
+
+module.exports = {
+  CommentType,
+  TagType,
+  LanguageType,
+  StatusType,
+  TorrentType,
+  TorrentInputType
+}

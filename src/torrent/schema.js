@@ -1,3 +1,7 @@
+// roots schemas
+const torrentQueryRoot = require('./queries.js');
+const torrentMutationRoot = require('./mutations.js');
+
 let {
   GraphQLString,
   GraphQLInt,
@@ -7,11 +11,10 @@ let {
   GraphQLSchema
 } = require('graphql');
 
-
 // This is the schema declaration
 const TorrentAppSchema = new GraphQLSchema({
-  query: TorrentQueryRootType,
-  mutation: TorrentMutationRootType
+  query: torrentQueryRoot,
+  mutation: torrentMutationRoot
 });
 
 module.exports = TorrentAppSchema;
