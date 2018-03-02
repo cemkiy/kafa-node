@@ -91,7 +91,7 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
       type: new GraphQLNonNull(userTypes.UserType),
       description: "Get user by username",
       args: {
-        id: {
+        username: {
           name: 'username',
           type: new GraphQLNonNull(GraphQLString)
         }
@@ -104,7 +104,7 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
       type: new GraphQLNonNull(userTypes.UserType),
       description: "Get user by email",
       args: {
-        id: {
+        email: {
           name: 'email',
           type: new GraphQLNonNull(GraphQLString)
         }
