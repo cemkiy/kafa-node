@@ -48,6 +48,5 @@ const KafaType = new GraphQLInputObjectType({
 
 module.exports = {
   KafaType,
-  UserType,
   UserInputType
 }

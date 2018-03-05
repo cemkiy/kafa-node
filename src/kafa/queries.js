@@ -1,10 +1,12 @@
 // Mongoose schemas
 const torrentModel = require('../torrent/models.js');
-const userModel = require('./models.js');
+const userModel = require('./users/models.js');
+const kafaModel = require('./models.js');
 
 // Graphql Types
 const torrentTypes = require('../torrent/types.js');
-const userTypes = require('./types.js');
+const userTypes = require('./user/types.js');
+const kafaTypes = require('./types.js');
 
 let {
   GraphQLString,
@@ -17,20 +19,20 @@ let {
 
 
 // This is the Root Query
-const UserQueryRootType = module.exports = new GraphQLObjectType({
-  name: 'UserQuerySchema',
-  description: "User Schema Query Root",
+const KafaQueryRootType = module.exports = new GraphQLObjectType({
+  name: 'KafaQuerySchema',
+  description: "Kafa Schema Query Root",
   fields: () => ({
-    users: {
-      type: new GraphQLList(userTypes.UserType),
-      description: "List of all Users",
+    kafas: {
+      type: new GraphQLList(kafaTypes.KafaType),
+      description: "List of all Kafas",
       args: {
-        username: {
-          name: 'username',
+        user_id: {
+          name: 'user_id',
           type: new GraphQLNonNull(GraphQLString)
         },
-        email: {
-          name: 'email',
+        torrent_id: {
+          name: 'torrent_id',
           type: new GraphQLNonNull(GraphQLString)
         },
         created_at_from: {
@@ -67,16 +69,16 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
         }
       },
       resolve: function(parent, args, ast) {
-        userModel.list(args, (err, users) => {
+        kafaModel.list(args, (err, kafas) => {
           if (err)
             throw err;
-          return users;
+          return kafas;
         });
       }
     },
-    userById: {
-      type: new GraphQLNonNull(userTypes.UserType),
-      description: "Get user by id",
+    kafaById: {
+      type: new GraphQLNonNull(kafaTypes.KafaType),
+      description: "Get kafa by id",
       args: {
         id: {
           name: 'id',
@@ -84,33 +86,7 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
         }
       },
       resolve: function(parent, args, ast) {
-        return userModel.findById(args.id);
-      }
-    },
-    userByUsername: {
-      type: new GraphQLNonNull(userTypes.UserType),
-      description: "Get user by username",
-      args: {
-        id: {
-          name: 'username',
-          type: new GraphQLNonNull(GraphQLString)
-        }
-      },
-      resolve: function(parent, args, ast) {
-        return userModel.findOne(args);
-      }
-    },
-    userByEmail: {
-      type: new GraphQLNonNull(userTypes.UserType),
-      description: "Get user by email",
-      args: {
-        id: {
-          name: 'email',
-          type: new GraphQLNonNull(GraphQLString)
-        }
-      },
-      resolve: function(parent, args, ast) {
-        return userModel.findOne(args);
+        return kafaModel.findById(args.id);
       }
     }
   })

@@ -22,7 +22,7 @@ const UserSchema = mongoose.Schema({
   birthday: {
     type: Date,
     required: true
-  }
+  },
   email_activation_key: {
     type: String
   },
@@ -59,6 +59,7 @@ module.exports.create = function(newUser, callback) {
 }
 
 module.exports.list = function(filter, callback) {
+  console.log(f);
   let limit = 25
   let skip = 0
   let sort = {}

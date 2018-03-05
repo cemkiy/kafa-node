@@ -12,23 +12,6 @@ let {
   GraphQLInputObjectType
 } = require('graphql');
 
-console.log(torrentTypes);
-
-
-const KafaType = new GraphQLObjectType({
-        name: 'KafaType',
-        description: "This represent a kafa",
-        fields: () => ({
-          torrent: {
-            type: new GraphQLNonNull(torrentTypes.KafaType),
-            resolve: function(kafa) {
-              return  torrentModel.findById(kafa.torrent_id);
-            }
-          },
-          kafa_count:{type: new GraphQLNonNull(GraphQLInt)}
-        })
-    })
-
 // UserType for query
 const UserType = new GraphQLObjectType({
   name: "UserType",
@@ -38,7 +21,6 @@ const UserType = new GraphQLObjectType({
     username: {type: new GraphQLNonNull(GraphQLString)},
     email: {type: new GraphQLNonNull(GraphQLString)},
     birthday: {type: new GraphQLNonNull(GraphQLString)},
-    kafas: { type: new GraphQLList(KafaType)},
     created_at: {type: new GraphQLNonNull(GraphQLString)},
     updated_at: {type: new GraphQLNonNull(GraphQLString)},
     deleted_at: {type: new GraphQLNonNull(GraphQLString)}
@@ -58,7 +40,6 @@ const UserInputType = new GraphQLInputObjectType({
 });
 
 module.exports = {
-  KafaType,
   UserType,
   UserInputType
 }

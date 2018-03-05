@@ -1,9 +1,7 @@
 // Mongoose schemas
-const torrentModel = require('../torrent/models.js');
 const userModel = require('./models.js');
 
 // Graphql Types
-const torrentTypes = require('../torrent/types.js');
 const userTypes = require('./types.js');
 
 let {

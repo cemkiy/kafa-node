@@ -1,6 +1,6 @@
 // roots schemas
-const userQueryRoot = require('./queries.js');
-const userMutationRoot = require('./mutations.js');
+const kafaQueryRoot = require('./queries.js');
+const kafaMutationRoot = require('./mutations.js');
 
 let {
   GraphQLString,
@@ -13,8 +13,8 @@ let {
 
 // This is the schema declaration
 const UserAppSchema = new GraphQLSchema({
-  query: userQueryRoot,
-  mutation: userMutationRoot
+  query: kafaQueryRoot,
+  mutation: kafaMutationRoot
 });
 
-module.exports = UserAppSchema;
+module.exports = KafaAppSchema;

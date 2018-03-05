@@ -1,10 +1,8 @@
 // Mongoose schemas
-const torrentModel = require('../torrent/models.js');
-const userModel = require('./models.js');
+const kafaModel = require('./models.js');
 
 // Graphql Types
-const torrentTypes = require('../torrent/types.js');
-const userTypes = require('./types.js');
+const kafaTypes = require('./types.js');
 
 let {
   GraphQLString,
@@ -16,7 +14,7 @@ let {
 } = require('graphql');
 
 // mutation {
-//    createUser(input: {
+//    createKafa(input: {
 //     email: "graphql@test.com"
 //    }) {
 //     id,
@@ -25,54 +23,54 @@ let {
 // }
 
 // This is the Root Mutation
-const UserMutationRootType = module.exports = new GraphQLObjectType({
-  name: 'UserMutationAppSchema',
-  description: "User Schema Mutation Root",
+const KafaMutationRootType = module.exports = new GraphQLObjectType({
+  name: 'KafaMutationAppSchema',
+  description: "Kafa Schema Mutation Root",
   fields: () => ({
-    createUser: {
-    type: new GraphQLNonNull(userTypes.UserType),
+    createKafa: {
+    type: new GraphQLNonNull(kafaTypes.KafaType),
     args: {
       input: {
-        type: new GraphQLNonNull(userTypes.UserInputType),
+        type: new GraphQLNonNull(kafaTypes.KafaInputType),
       },
     },
     resolve: async (rootValue, { input }) => {
       const result = await new Promise((resolve) => {
         setTimeout(() =>
           resolve(
-            userModel.create(input, (err, user) => {
+            kafaModel.create(input, (err, kafa) => {
               if(err) throw err;
-              return user;
+              return kafa;
             })
           ), 100);
       });
         return result;
         }
     },
-    updateUser: {
-    type: new GraphQLNonNull(userTypes.UserType),
+    updateKafa: {
+    type: new GraphQLNonNull(kafaTypes.KafaType),
     args: {
       id: {
         type: new GraphQLNonNull(GraphQLString),
       },
       input: {
-        type: new GraphQLNonNull(userTypes.UserInputType),
+        type: new GraphQLNonNull(kafaTypes.KafaInputType),
       }
     },
     resolve: async (rootValue, args) => {
       const result = await new Promise((resolve) => {
         setTimeout(() =>
           resolve(
-            userModel.update(args.id, args.input, (err, updatedUser) => {
+            kafaModel.update(args.id, args.input, (err, updatedKafa) => {
               if(err) throw err;
-              return updatedUser;
+              return updatedKafa;
             })
           ), 100);
       });
         return result;
         }
     },
-    deleteUser: {
+    deleteKafa: {
     type: GraphQLString,
     args: {
       id: {
@@ -83,7 +81,7 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
       const result = await new Promise((resolve) => {
         setTimeout(() =>
           resolve(
-            userModel.findByIdAndRemove(args.id, (err, user) => {
+            kafaModel.findByIdAndRemove(args.id, (err, kafa) => {
               if (err) return "failure";
               return "deleted"
           })

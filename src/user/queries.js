@@ -27,47 +27,48 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
       args: {
         username: {
           name: 'username',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         },
         email: {
           name: 'email',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         },
         created_at_from: {
           name: 'created_at_from',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         },
         created_at_to: {
           name: 'created_at_to',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         },
         updated_at_from: {
           name: 'updated_at_from',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         },
         updated_at_to: {
           name: 'updated_at_to',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         },
         limit: {
           name: 'limit',
-          type: new GraphQLNonNull(GraphQLInt)
+          type: GraphQLInt
         },
         skip: {
           name: 'skip',
-          type: new GraphQLNonNull(GraphQLInt)
+          type: GraphQLInt
         },
         sort_field: {
           name: 'sort_field',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         },
         sort_type: {
           name: 'sort_type',
-          type: new GraphQLNonNull(GraphQLInt)
+          type: GraphQLInt
         }
       },
       resolve: function(parent, args, ast) {
         userModel.list(args, (err, users) => {
+          console.log(users);
           if (err)
             throw err;
           return users;
@@ -80,7 +81,7 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
       args: {
         id: {
           name: 'id',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         }
       },
       resolve: function(parent, args, ast) {
@@ -93,7 +94,7 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
       args: {
         username: {
           name: 'username',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         }
       },
       resolve: function(parent, args, ast) {
@@ -106,7 +107,7 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
       args: {
         email: {
           name: 'email',
-          type: new GraphQLNonNull(GraphQLString)
+          type: GraphQLString
         }
       },
       resolve: function(parent, args, ast) {

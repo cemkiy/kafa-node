@@ -31,7 +31,7 @@ const Kafa = module.exports = mongoose.model('Kafa', KafaSchema);
 
 // Create Kafa
 module.exports.create = function(newKafa, callback) {
-  newUser.save(callback);
+  newKafa.save(callback);
 }
 
 module.exports.list = function(filter, callback) {
@@ -63,7 +63,7 @@ module.exports.list = function(filter, callback) {
     query["user_id"] = filter.user_id;
 
   if (filter.torrent_id)
-    query["user_id"] = filter.user_id;
+    query["torrent_id"] = filter.torrent_id;
 
   if (filter.created_at_from || filter.created_at_to) {
     created_at_query = {}
@@ -88,10 +88,10 @@ module.exports.list = function(filter, callback) {
 
 // Update Kafa
 module.exports.update = function(id, updateKafa, callback) {
-  User.findById(id, function(err, kafa) {
+  Kafa.findById(id, function(err, kafa) {
     if (err) return handleError(err);
     updateKafa.updated_at = new Date();
-    user.set(updateKafa);
-    user.save(callback);
+    kafa.set(updateKafa);
+    kafa.save(callback);
   });
 }
