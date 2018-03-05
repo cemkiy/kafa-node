@@ -5,12 +5,12 @@ const torrentModel = require('./models.js');
 const torrentTypes = require('./types.js');
 
 let {
-  GraphQLString,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLNonNull,
-  GraphQLSchema
+	GraphQLString,
+	GraphQLInt,
+	GraphQLList,
+	GraphQLObjectType,
+	GraphQLNonNull,
+	GraphQLSchema
 } = require('graphql');
 
 // mutation {
@@ -24,68 +24,59 @@ let {
 
 // This is the Root Mutation
 const TorrentMutationRootType = module.exports = new GraphQLObjectType({
-  name: 'TorrentMutationSchema',
-  description: "Torrent Schema Mutation Root",
-  fields: () => ({
-    createTorrent: {
-    type: torrentTypes.TorrentType,
-    args: {
-      input: {
-        type: new GraphQLNonNull(torrentTypes.TorrentInputType),
-      },
-    },
-    resolve: async (rootValue, { input }) => {
-      const result = await new Promise((resolve) => {
-        setTimeout(() =>
-          resolve(
-            torrentModel.create(input, (err, torrent) => {
-              if(err) throw err;
-              return torrent;
-            })
-          ), 100);
-      });
-        return result;
-        }
-    },
-    updateTorrent: {
-    type: torrentTypes.TorrentType,
-    args: {
-      input: {
-        type: new GraphQLNonNull(torrentTypes.TorrentInputType),
-      },
-    },
-    resolve: async (rootValue, { input }) => {
-      const result = await new Promise((resolve) => {
-        setTimeout(() =>
-          resolve(
-            torrentModel.update(args.id, args.input, (err, updatedTorrent) => {
-              if(err) throw err;
-              return updatedTorrent;
-            })
-          ), 100);
-      });
-        return result;
-        }
-    },
-    deleteTorrent: {
-    type: GraphQLString,
-    args: {
-      id: {
-        type: new GraphQLNonNull(GraphQLString),
-      }
-    },
-    resolve: async (rootValue, args) => {
-      const result = await new Promise((resolve) => {
-        setTimeout(() =>
-          resolve(
-             torrentModel.findByIdAndRemove(args.id, (err, torrent) => {
-              if (err) return "failure";
-              return "deleted"
-          })
-          ), 100);
-      });
-        return result;
-        }
-    }
-  })
+	name: 'TorrentMutationSchema',
+	description: "Torrent Schema Mutation Root",
+	fields: () => ({
+		createTorrent: {
+			type: new GraphQLNonNull(torrentTypes.TorrentType),
+			args: {
+				input: {
+					type: new GraphQLNonNull(torrentTypes.TorrentCreateInputType),
+				},
+			},
+			resolve: function (parent, {
+				input
+			}, ast) {
+				return torrentModel.new(input).then(function (torrent) {
+					return torrent
+				})
+			}
+		},
+		updateTorrent: {
+			type: new GraphQLNonNull(torrentTypes.TorrentType),
+			args: {
+				input: {
+					type: new GraphQLNonNull(torrentTypes.TorrentUpdateInputType),
+				},
+			},
+			resolve: function (parent, args, ast) {
+				return torrentModel.findByIdAndUpdate(args.id, {
+						"$set": args.input
+					}).exec()
+					.then((torrent) => {
+						return torrent
+					})
+					.catch((err) => {
+						throw err;
+					})
+			}
+		},
+		deleteTorrent: {
+			type: GraphQLString,
+			args: {
+				id: {
+					type: new GraphQLNonNull(GraphQLString),
+				}
+			},
+			resolve: function (parent, args, ast) {
+				return torrentModel.findByIdAndRemove(args.id).exec()
+					.then(() => {
+						return "deleted"
+					})
+					.catch((err) => {
+						throw err;
+					})
+			}
+		}
+	})
 });
