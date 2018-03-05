@@ -26,9 +26,9 @@ const UserType = new GraphQLObjectType({
   })
 });
 
-// UserInputType for mutation
-const UserInputType = new GraphQLInputObjectType({
-  name: "UserInputType",
+// UserCreateInputType for mutation
+const UserCreateInputType = new GraphQLInputObjectType({
+  name: "UserCreateInputType",
   description: "This represent an user",
   fields: () => ({
     username: {type: new GraphQLNonNull(GraphQLString)},
@@ -38,7 +38,20 @@ const UserInputType = new GraphQLInputObjectType({
   })
 });
 
+// UserUpdateInputType for mutation
+const UserUpdateInputType = new GraphQLInputObjectType({
+  name: "UserUpdateInputType",
+  description: "This represent an user",
+  fields: () => ({
+    username: {type: GraphQLString},
+    email: {type: GraphQLString},
+    password: {type: GraphQLString},
+    birthday: {type: GraphQLString}
+  })
+});
+
 module.exports = {
   UserType,
-  UserInputType
+  UserCreateInputType,
+  UserUpdateInputType
 }

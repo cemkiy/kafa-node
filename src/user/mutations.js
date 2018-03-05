@@ -31,16 +31,13 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
     type: new GraphQLNonNull(userTypes.UserType),
     args: {
       input: {
-        type: new GraphQLNonNull(userTypes.UserInputType),
+        type: new GraphQLNonNull(userTypes.UserCreateInputType),
       },
     },
-    resolve:async function(parent, {input}, ast) {
-    return userModel.create(input, (err, user) => {
-      console.log(err,user);
-       if (err)
-         throw err;
-       return user;
-     });
+    resolve: function(parent, {input}, ast) {
+    return userModel.create(input).then(function (user) {
+      return user
+    })
    }
     },
     updateUser: {
@@ -50,21 +47,18 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
         type: new GraphQLNonNull(GraphQLString),
       },
       input: {
-        type: new GraphQLNonNull(userTypes.UserInputType),
+        type: new GraphQLNonNull(userTypes.UserUpdateInputType),
       }
     },
-    resolve: async (rootValue, args) => {
-      const result = await new Promise((resolve) => {
-        setTimeout(() =>
-          resolve(
-            userModel.update(args.id, args.input, (err, updatedUser) => {
-              if(err) throw err;
-              return updatedUser;
-            })
-          ), 100);
-      });
-        return result;
-        }
+    resolve: function(parent, args, ast) {
+     return userModel.findByIdAndUpdate(args.id, {"$set":args.input}).exec()
+     .then((user)=>{
+       return user
+     })
+     .catch((err)=>{
+       throw err;
+     })
+   }
     },
     deleteUser: {
     type: GraphQLString,
@@ -73,18 +67,15 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
         type: new GraphQLNonNull(GraphQLString),
       }
     },
-    resolve: async (rootValue, args) => {
-      const result = await new Promise((resolve) => {
-        setTimeout(() =>
-          resolve(
-            userModel.findByIdAndRemove(args.id, (err, user) => {
-              if (err) return "failure";
-              return "deleted"
-          })
-          ), 100);
-      });
-        return result;
-        }
+    resolve: function(parent, args, ast) {
+     return userModel.findByIdAndRemove(args.id).exec()
+     .then(()=>{
+       return "deleted"
+     })
+     .catch((err)=>{
+       throw err;
+     })
+   }
     }
   })
 });

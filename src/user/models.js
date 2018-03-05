@@ -44,9 +44,8 @@ const UserSchema = mongoose.Schema({
 const User = module.exports = mongoose.model('User', UserSchema);
 
 // Create User
-module.exports.create = function(input, callback) {
+module.exports.new = function(input) {
   input.birthday = new Date(input.birthday);
-  let newUser = new User(input);
   // bcrypt.genSalt(10, (err, salt) => {
   //   bcrypt.hash(newUser.password, salt, (err, hash) => {
   //     if (err)
@@ -56,7 +55,7 @@ module.exports.create = function(input, callback) {
   //     newUser.save(callback);
   //   });
   // })
-  return newUser.save(callback);
+  return User.create(input);
 }
 
 module.exports.getById = function(id, callback) {
@@ -123,16 +122,6 @@ module.exports.list = function(filter, callback) {
   }
 
   return User.find(query, callback).skip(skip).limit(limit).sort(sort);
-}
-
-// Update User
-module.exports.update = function(id, updateUser, callback) {
-  User.findById(id, function(err, user) {
-    if (err) return handleError(err);
-    updateUser.updated_at = new Date();
-    user.set(updateUser);
-    user.save(callback);
-  });
 }
 
 // Set Password User
