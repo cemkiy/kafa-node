@@ -66,9 +66,8 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
           type: GraphQLInt
         }
       },
-      resolve: function(parent, args, ast) {
-        userModel.list(args, (err, users) => {
-          console.log(users);
+       resolve: function(parent, args, ast) {
+       return userModel.list(args, (err, users) => {
           if (err)
             throw err;
           return users;
@@ -85,7 +84,11 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
         }
       },
       resolve: function(parent, args, ast) {
-        return userModel.findById(args.id);
+        return userModel.getById(args.id, (err, user) => {
+           if (err)
+             throw err;
+           return user;
+         });
       }
     },
     userByUsername: {
@@ -98,7 +101,11 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
         }
       },
       resolve: function(parent, args, ast) {
-        return userModel.findOne(args);
+        return userModel.getOne(args, (err, user) => {
+           if (err)
+             throw err;
+           return user;
+         });
       }
     },
     userByEmail: {
@@ -111,7 +118,11 @@ const UserQueryRootType = module.exports = new GraphQLObjectType({
         }
       },
       resolve: function(parent, args, ast) {
-        return userModel.findOne(args);
+        return userModel.getOne(args, (err, user) => {
+           if (err)
+             throw err;
+           return user;
+         });
       }
     }
   })

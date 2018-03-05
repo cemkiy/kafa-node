@@ -17,13 +17,12 @@ const UserType = new GraphQLObjectType({
   name: "UserType",
   description: "This represent an user",
   fields: () => ({
-    id: {type: new GraphQLNonNull(GraphQLString)},
+    id: {type:new GraphQLNonNull(GraphQLString)},
     username: {type: new GraphQLNonNull(GraphQLString)},
     email: {type: new GraphQLNonNull(GraphQLString)},
     birthday: {type: new GraphQLNonNull(GraphQLString)},
     created_at: {type: new GraphQLNonNull(GraphQLString)},
-    updated_at: {type: new GraphQLNonNull(GraphQLString)},
-    deleted_at: {type: new GraphQLNonNull(GraphQLString)}
+    updated_at: {type: new GraphQLNonNull(GraphQLString)}
   })
 });
 

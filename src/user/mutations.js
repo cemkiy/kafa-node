@@ -34,18 +34,14 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
         type: new GraphQLNonNull(userTypes.UserInputType),
       },
     },
-    resolve: async (rootValue, { input }) => {
-      const result = await new Promise((resolve) => {
-        setTimeout(() =>
-          resolve(
-            userModel.create(input, (err, user) => {
-              if(err) throw err;
-              return user;
-            })
-          ), 100);
-      });
-        return result;
-        }
+    resolve:async function(parent, {input}, ast) {
+    return userModel.create(input, (err, user) => {
+      console.log(err,user);
+       if (err)
+         throw err;
+       return user;
+     });
+   }
     },
     updateUser: {
     type: new GraphQLNonNull(userTypes.UserType),

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const util = require('util');
+
 // const bcrypt = require('bcryptjs');
 
 // User Schema
@@ -36,16 +38,15 @@ const UserSchema = mongoose.Schema({
   updated_at: {
     type: Date,
     default: Date.now
-  },
-  deleted_at: {
-    type: Date
   }
 });
 
 const User = module.exports = mongoose.model('User', UserSchema);
 
 // Create User
-module.exports.create = function(newUser, callback) {
+module.exports.create = function(input, callback) {
+  input.birthday = new Date(input.birthday);
+  let newUser = new User(input);
   // bcrypt.genSalt(10, (err, salt) => {
   //   bcrypt.hash(newUser.password, salt, (err, hash) => {
   //     if (err)
@@ -55,11 +56,18 @@ module.exports.create = function(newUser, callback) {
   //     newUser.save(callback);
   //   });
   // })
-  newUser.save(callback);
+  return newUser.save(callback);
+}
+
+module.exports.getById = function(id, callback) {
+  return User.findById(id, callback);
+}
+
+module.exports.getOne = function(query, callback) {
+  return User.findOne(query, callback);
 }
 
 module.exports.list = function(filter, callback) {
-  console.log(f);
   let limit = 25
   let skip = 0
   let sort = {}
