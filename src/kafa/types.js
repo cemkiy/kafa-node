@@ -23,7 +23,7 @@ const KafaType = new GraphQLObjectType({
 	description: "This represent a kafa",
 	fields: () => ({
 		torrent: {
-			type: new GraphQLNonNull(torrentTypes.KafaType),
+			type: new GraphQLNonNull(torrentTypes.TorrentType),
 			resolve: function (kafa) {
 				return torrentModel.getById(kafa.torrent_id, (err, torrent) => {
 					if (err)

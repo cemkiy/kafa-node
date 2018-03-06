@@ -12,7 +12,7 @@ let {
 } = require('graphql');
 
 // This is the schema declaration
-const UserAppSchema = new GraphQLSchema({
+const KafaAppSchema = new GraphQLSchema({
   query: kafaQueryRoot,
   mutation: kafaMutationRoot
 });
