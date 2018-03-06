@@ -1,3 +1,5 @@
+
+
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const userSchema = require('./src/user/schema.js');
@@ -31,37 +33,29 @@ app.use(passport.session());
 
 require('./src/config/passport')(passport);
 
-app.use("/graphql", function (req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-	console.log(req.originalUrl);
-	if (req.method === 'OPTIONS') {
-		res.sendStatus(200);
-	} else {
-		next();
-	}
-});
-
-app.use('/graphql/users', passport.authenticate('jwt', {
+app.use("/graphql/users", passport.authenticate('jwt', {
 	session: false
-}), graphqlHTTP({
+}), graphqlHTTP(request => ({
 	schema: userSchema,
-	graphiql: true //set to false if you don't want graphiql enabled
-}));
+	rootValue: request,
+	graphiql: true,
+})));
 
 app.use('/graphql/torrents', passport.authenticate('jwt', {
 	session: false
-}), graphqlHTTP({
+}), graphqlHTTP(request => ({
 	schema: torrentSchema,
-	graphiql: true //set to false if you don't want graphiql enabled
-}));
+	rootValue: request,
+	graphiql: true,
+})));
 
 app.use('/graphql/kafas', passport.authenticate('jwt', {
 	session: false
-}), graphqlHTTP({
+}), graphqlHTTP(request => ({
 	schema: kafaSchema,
-	graphiql: true //set to false if you don't want graphiql enabled
-}));
+	rootValue: request,
+	graphiql: true,
+})));
 
 app.use('/graphql/token', graphqlHTTP({
 	schema: tokenSchema,

@@ -36,7 +36,7 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 			},
 			resolve: function (parent, {
 				input
-			}, ast) {
+			}, context) {
 				return torrentModel.new(input).then(function (torrent) {
 					return torrent
 				})
@@ -49,7 +49,7 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 					type: new GraphQLNonNull(torrentTypes.TorrentUpdateInputType),
 				},
 			},
-			resolve: function (parent, args, ast) {
+			resolve: function (parent, args, context) {
 				return torrentModel.findByIdAndUpdate(args.id, {
 						"$set": args.input
 					}).exec()
@@ -68,7 +68,7 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 					type: new GraphQLNonNull(GraphQLString),
 				}
 			},
-			resolve: function (parent, args, ast) {
+			resolve: function (parent, args, context) {
 				return torrentModel.findByIdAndRemove(args.id).exec()
 					.then(() => {
 						return "deleted"

@@ -36,7 +36,7 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
 			},
 			resolve: function (parent, {
 				input
-			}, ast) {
+			}, context) {
 				return userModel.create(input).then(function (user) {
 					return user
 				})
@@ -52,7 +52,10 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
 					type: new GraphQLNonNull(userTypes.UserUpdateInputType),
 				}
 			},
-			resolve: function (parent, args, ast) {
+			resolve: function (parent, args, context) {
+				if(context.rootValue.user.id != args.id){
+					throw new Error('Your id not match!');
+				}
 				return userModel.findByIdAndUpdate(args.id, {
 						"$set": args.input
 					}).exec()
@@ -71,7 +74,10 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
 					type: new GraphQLNonNull(GraphQLString),
 				}
 			},
-			resolve: function (parent, args, ast) {
+			resolve: function (parent, args, context) {
+				if(context.rootValue.user.id != args.id){
+					throw new Error('Your id not match!');
+				}
 				return userModel.findByIdAndRemove(args.id).exec()
 					.then(() => {
 						return "deleted"

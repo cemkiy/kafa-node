@@ -38,7 +38,10 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 			},
 			resolve: function (parent, {
 				input
-			}, ast) {
+			}, context) {
+				if(context.rootValue.user.id != input.user_id){
+					throw new Error('Your id not match!');
+				}
 				return kafaModel.create(input).then(function (kafa) {
 					return kafa
 				})
@@ -54,7 +57,7 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 					type: new GraphQLNonNull(kafaTypes.KafaUpdateInputType),
 				}
 			},
-			resolve: function (parent, args, ast) {
+			resolve: function (parent, args, context) {
 				return kafaModel.findByIdAndUpdate(args.id, {
 						"$set": args.input
 					}).exec()
@@ -73,7 +76,7 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 					type: new GraphQLNonNull(GraphQLString),
 				}
 			},
-			resolve: function (parent, args, ast) {
+			resolve: function (parent, args, context) {
 				return kafaModel.findByIdAndRemove(args.id).exec()
 					.then(() => {
 						return "deleted"
