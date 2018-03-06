@@ -8,6 +8,7 @@ const userModel = require('../user/models.js');
 
 // Graphql Types
 const tokenTypes = require('./types.js');
+const userTypes = require('../user/types.js');
 
 let {
  GraphQLString,
@@ -59,6 +60,21 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
          .catch((err) => {
            throw err;
          })
+     }
+   },
+   createUser: {
+     type: new GraphQLNonNull(userTypes.UserType),
+     args: {
+       input: {
+         type: new GraphQLNonNull(userTypes.UserCreateInputType),
+       },
+     },
+     resolve: function (parent, {
+       input
+     }, context) {
+       return userModel.create(input).then(function (user) {
+         return user
+       })
      }
    }
  })

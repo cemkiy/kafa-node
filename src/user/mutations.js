@@ -27,21 +27,6 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
 	name: 'UserMutationAppSchema',
 	description: "User Schema Mutation Root",
 	fields: () => ({
-		createUser: {
-			type: new GraphQLNonNull(userTypes.UserType),
-			args: {
-				input: {
-					type: new GraphQLNonNull(userTypes.UserCreateInputType),
-				},
-			},
-			resolve: function (parent, {
-				input
-			}, context) {
-				return userModel.create(input).then(function (user) {
-					return user
-				})
-			}
-		},
 		updateUser: {
 			type: new GraphQLNonNull(userTypes.UserType),
 			args: {

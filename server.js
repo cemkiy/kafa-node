@@ -57,9 +57,17 @@ app.use('/graphql/kafas', passport.authenticate('jwt', {
 	graphiql: true,
 })));
 
+app.use('/graphql/roles', passport.authenticate('jwt', {
+	session: false
+}), graphqlHTTP(request => ({
+	schema: roleSchema,
+	rootValue: request,
+	graphiql: true,
+})));
+
 app.use('/graphql/token', graphqlHTTP({
 	schema: tokenSchema,
-	graphiql: true //set to false if you don't want graphiql enabled
+	graphiql: true
 }));
 
 app.listen(port);
