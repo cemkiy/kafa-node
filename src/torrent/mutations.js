@@ -1,3 +1,5 @@
+const config = require('../config/security.js');
+
 // Mongoose schemas
 const torrentModel = require('./models.js');
 
@@ -37,6 +39,7 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 			resolve: function (parent, {
 				input
 			}, context) {
+				config.securityPointForCreateSource(context.rootValue, ['user', 'admin']);
 				return torrentModel.new(input).then(function (torrent) {
 					return torrent
 				})
@@ -50,6 +53,7 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 				},
 			},
 			resolve: function (parent, args, context) {
+				config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'admin']);
 				return torrentModel.findByIdAndUpdate(args.id, {
 						"$set": args.input
 					}).exec()
@@ -69,6 +73,7 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
+				config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'admin']);
 				return torrentModel.findByIdAndRemove(args.id).exec()
 					.then(() => {
 						return "deleted"

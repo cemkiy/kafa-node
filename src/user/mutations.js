@@ -1,3 +1,5 @@
+const config = require('../config/security.js');
+
 // Mongoose schemas
 const userModel = require('./models.js');
 
@@ -38,9 +40,7 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
-				if(context.rootValue.user.id != args.id){
-					throw new Error('Your id not match!');
-				}
+				config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner','admin']);
 				return userModel.findByIdAndUpdate(args.id, {
 						"$set": args.input
 					}).exec()
@@ -60,9 +60,7 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
-				if(context.rootValue.user.id != args.id){
-					throw new Error('Your id not match!');
-				}
+				config.securityPointForChangeSource(context.rootValue, args.id, ['admin']);
 				return userModel.findByIdAndRemove(args.id).exec()
 					.then(() => {
 						return "deleted"

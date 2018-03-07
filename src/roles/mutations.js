@@ -1,4 +1,4 @@
-
+const config = require('../config/security.js');
 
 // Mongoose schemas
 const roleModel = require('./models.js');
@@ -39,6 +39,7 @@ const RoleMutationRootType = module.exports = new GraphQLObjectType({
 			resolve: function (parent, {
 				input
 			}, context) {
+				config.securityPointForCreateSource(context.rootValue, ['admin']);
 				return roleModel.create(input).then(function (role) {
 					return role
 				})
@@ -55,6 +56,7 @@ const RoleMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
+				config.securityPointForChangeSource(context.rootValue, args.id, ['admin']);
 				return roleModel.findByIdAndUpdate(args.id, {
 						"$set": args.input
 					}).exec()
@@ -74,6 +76,7 @@ const RoleMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
+				config.securityPointForChangeSource(context.rootValue, args.id, ['admin']);
 				return roleModel.findByIdAndRemove(args.id).exec()
 					.then(() => {
 						return "deleted"

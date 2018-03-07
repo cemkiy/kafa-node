@@ -21,6 +21,7 @@ const RoleType = new GraphQLObjectType({
 	name: 'RoleType',
 	description: "This represent a role",
 	fields: () => ({
+		id: { type: new GraphQLNonNull(GraphQLString)},
 		user: {
 			type: new GraphQLNonNull(userTypes.UserType),
 			resolve: function (role) {

@@ -1,4 +1,4 @@
-
+const config = require('../config/security.js');
 
 // Mongoose schemas
 const kafaModel = require('./models.js');
@@ -39,9 +39,7 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 			resolve: function (parent, {
 				input
 			}, context) {
-				if(context.rootValue.user.id != input.user_id){
-					throw new Error('Your id not match!');
-				}
+				config.securityPointForCreateSource(context.rootValue, ['user', 'admin']);
 				return kafaModel.create(input).then(function (kafa) {
 					return kafa
 				})
@@ -58,6 +56,7 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
+				config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'admin']);
 				return kafaModel.findByIdAndUpdate(args.id, {
 						"$set": args.input
 					}).exec()
@@ -77,6 +76,7 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
+				config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'admin']);
 				return kafaModel.findByIdAndRemove(args.id).exec()
 					.then(() => {
 						return "deleted"
