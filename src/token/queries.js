@@ -17,7 +17,7 @@ const TokenQueryRootType = module.exports = new GraphQLObjectType({
     tokens:{
       type: GraphQLString,
 			description: "List of all Tokens",
-      resolve: function (parent, args, ast) {
+      resolve: function (parent, args, context) {
 				return null
 			}
     }

@@ -40,7 +40,8 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 				input
 			}, context) {
 				config.securityPointForCreateSource(context.rootValue, ['user', 'admin']);
-				return torrentModel.new(input).then(function (torrent) {
+				return torrentModel.new(input).exec()
+				.then(function (torrent) {
 					return torrent
 				})
 			}

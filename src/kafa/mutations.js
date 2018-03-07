@@ -40,7 +40,8 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 				input
 			}, context) {
 				config.securityPointForCreateSource(context.rootValue, ['user', 'admin']);
-				return kafaModel.create(input).then(function (kafa) {
+				return kafaModel.create(input).exec()
+				.then(function (kafa) {
 					return kafa
 				})
 			}

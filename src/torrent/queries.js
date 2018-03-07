@@ -99,7 +99,7 @@ const TorrentQueryRootType = module.exports = new GraphQLObjectType({
 					type: GraphQLInt
 				}
 			},
-			resolve: function (parent, args, ast) {
+			resolve: function (parent, args, context) {
 				return torrentModel.list(args, (err, torrents) => {
 					if (err)
 						throw err;
@@ -116,7 +116,7 @@ const TorrentQueryRootType = module.exports = new GraphQLObjectType({
 					type: new GraphQLNonNull(GraphQLString)
 				}
 			},
-			resolve: function (parent, args, ast) {
+			resolve: function (parent, args, context) {
 				return torrentModel.getById(args.id, (err, torrent) => {
 					if (err)
 						throw err;

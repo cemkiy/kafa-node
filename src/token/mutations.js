@@ -5,18 +5,19 @@ const config = require('../config');
 
 // Mongoose schemas
 const userModel = require('../user/models.js');
+const roleModel = require('../role/models.js');
 
 // Graphql Types
 const tokenTypes = require('./types.js');
 const userTypes = require('../user/types.js');
 
 let {
- GraphQLString,
- GraphQLInt,
- GraphQLList,
- GraphQLObjectType,
- GraphQLNonNull,
- GraphQLSchema
+	GraphQLString,
+	GraphQLInt,
+	GraphQLList,
+	GraphQLObjectType,
+	GraphQLNonNull,
+	GraphQLSchema
 } = require('graphql');
 
 // mutation {
@@ -30,52 +31,65 @@ let {
 
 // This is the Root Mutation
 const TokenMutationRootType = module.exports = new GraphQLObjectType({
- name: 'TokenMutationAppSchema',
- description: "Token Schema Mutation Root",
- fields: () => ({
-   createToken: {
-     type: new GraphQLNonNull(tokenTypes.TokenType),
-     args: {
-       input: {
-         type: new GraphQLNonNull(tokenTypes.TokenCreateInputType),
-       },
-     },
-     resolve: function (parent, {
-       input
-     }, ast) {
-       return userModel.getOne(input).exec()
-         .then((user) => {
-           const token = jwt.sign({
-             user
-           }, config.SECRET_KEY, {
-             expiresIn: 604800 // 1 week
-           });
-           tokenObj = tokenTypes.TokenType;
-           tokenObj = {
-             token: token,
-             user_id: user.id
-           }
-           return tokenObj;
-         })
-         .catch((err) => {
-           throw err;
-         })
-     }
-   },
-   createUser: {
-     type: new GraphQLNonNull(userTypes.UserType),
-     args: {
-       input: {
-         type: new GraphQLNonNull(userTypes.UserCreateInputType),
-       },
-     },
-     resolve: function (parent, {
-       input
-     }, context) {
-       return userModel.create(input).then(function (user) {
-         return user
-       })
-     }
-   }
- })
+	name: 'TokenMutationAppSchema',
+	description: "Token Schema Mutation Root",
+	fields: () => ({
+		createToken: {
+			type: new GraphQLNonNull(tokenTypes.TokenType),
+			args: {
+				input: {
+					type: new GraphQLNonNull(tokenTypes.TokenCreateInputType),
+				},
+			},
+			resolve: function (parent, {
+				input
+			}, context) {
+				input_password = input.password;
+				delete input.password;
+				return userModel.getOne(input)
+					.then((user) => {
+						if (userModel.comparePassword(input_password, user.password)) {
+							const token = jwt.sign({
+								user
+							}, config.SECRET_KEY, {
+								expiresIn: 604800 // 1 week
+							});
+							tokenObj = tokenTypes.TokenType;
+							tokenObj = {
+								token: token,
+								user_id: user.id
+							}
+							return tokenObj;
+						} else {
+							throw new Error("Wrong Password");
+						}
+					})
+					.catch((err) => {
+						throw err;
+					})
+			}
+		},
+		createUser: {
+			type: new GraphQLNonNull(userTypes.UserType),
+			args: {
+				input: {
+					type: new GraphQLNonNull(userTypes.UserCreateInputType),
+				},
+			},
+			resolve: function (parent, {
+				input
+			}, context) {
+				return userModel.new(input).exec()
+					.then(function (user) {
+						roleModel.new({
+							user_id: user.id
+						});
+						return user;
+					})
+					.catch((err) => {
+						throw err;
+					})
+			}
+		}
+	})
 });

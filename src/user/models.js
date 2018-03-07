@@ -1,9 +1,8 @@
-
-
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const util = require('util');
 
-// const bcrypt = require('bcryptjs');
 
 // User Schema
 const UserSchema = mongoose.Schema({
@@ -45,18 +44,17 @@ const UserSchema = mongoose.Schema({
 
 const User = module.exports = mongoose.model('User', UserSchema);
 
+module.exports.comparePassword = function(password, hash) {
+  return bcrypt.compareSync(password, hash);
+}
+
 // Create User
 module.exports.new = function (input) {
 	input.birthday = new Date(input.birthday);
-	// bcrypt.genSalt(10, (err, salt) => {
-	//   bcrypt.hash(newUser.password, salt, (err, hash) => {
-	//     if (err)
-	//       throw err;
-	//     newUser.password = hash;
-	//     newUser.email_activation_key = crypto.randomBytes(20).toString('hex');
-	//     newUser.save(callback);
-	//   });
-	// })
+	var salt = bcrypt.genSaltSync(10);
+	var hash = bcrypt.hashSync(input.password, salt);
+	input.password = hash;
+	input.email_activation_key = crypto.randomBytes(20).toString('hex');
 	return User.create(input);
 }
 
@@ -123,26 +121,3 @@ module.exports.list = function (filter, callback) {
 
 	return User.find(query, callback).skip(skip).limit(limit).sort(sort);
 }
-
-// Set Password User
-// module.exports.setPassword = function(user, password, callback) {
-//   bcrypt.genSalt(10, (err, salt) => {
-//     bcrypt.hash(password, salt, (err, hash) => {
-//       if (err)
-//         throw err;
-//       user.password = hash;
-//       user.forgot_password_token = "";
-//       user.save(callback);
-//     });
-//   })
-// }
-//
-// // Compare Password
-// module.exports.comparePassword = function(password, hash, callback) {
-//   bcrypt.compare(password, hash, (err, isMatch) => {
-//     if (err)
-//       throw err;
-//
-//     callback(null, isMatch);
-//   })
-// }
