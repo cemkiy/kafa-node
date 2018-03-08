@@ -49,14 +49,11 @@ const KafaType = new GraphQLObjectType({
 	})
 })
 
-const KafaCreateInputType = new GraphQLInputObjectType({
-	name: 'KafaCreateInputType',
+const KafaIncrementInputType = new GraphQLInputObjectType({
+	name: 'KafaIncrementInputType',
 	description: "This represent a kafa",
 	fields: () => ({
 		torrent_id: {
-			type: new GraphQLNonNull(GraphQLString)
-		},
-		user_id: {
 			type: new GraphQLNonNull(GraphQLString)
 		}
 	})
@@ -66,12 +63,6 @@ const KafaUpdateInputType = new GraphQLInputObjectType({
 	name: 'KafaUpdateInputType',
 	description: "This represent a kafa",
 	fields: () => ({
-		torrent_id: {
-			type: GraphQLString
-		},
-		user_id: {
-			type: GraphQLString
-		},
 		kafa_count: {
 			type: GraphQLInt
 		}
@@ -80,6 +71,6 @@ const KafaUpdateInputType = new GraphQLInputObjectType({
 
 module.exports = {
 	KafaType,
-	KafaCreateInputType,
+	KafaIncrementInputType,
 	KafaUpdateInputType
 }

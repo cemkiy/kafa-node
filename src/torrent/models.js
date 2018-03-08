@@ -88,7 +88,9 @@ const TorrentSchema = mongoose.Schema({
 	},
 	info_hash: {
 		type: String,
-		required: true
+		required: true,
+		unique : true,
+		dropDups: true
 	},
 	screens: {
 		type: [String]

@@ -79,7 +79,7 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 			resolve: function (parent, {
 				input
 			}, context) {
-				return userModel.new(input).exec()
+				return userModel.new(input)
 					.then(function (user) {
 						roleModel.new({
 							user_id: user.id

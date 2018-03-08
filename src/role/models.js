@@ -6,7 +6,9 @@ const mongoose = require('mongoose');
 const RoleSchema = mongoose.Schema({
 	user_id: {
 		type: String,
-		required: true
+		required: true,
+		unique : true,
+		dropDups: true
 	},
 	type: {
 		type: String,

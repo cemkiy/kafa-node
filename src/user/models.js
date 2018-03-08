@@ -8,11 +8,15 @@ const util = require('util');
 const UserSchema = mongoose.Schema({
 	username: {
 		type: String,
-		required: true
+		required: true,
+		unique : true,
+		dropDups: true
 	},
 	email: {
 		type: String,
-		required: true
+		required: true,
+		unique : true,
+		dropDups: true
 	},
 	password: {
 		type: String,

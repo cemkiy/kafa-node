@@ -29,21 +29,26 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 	name: 'KafaMutationAppSchema',
 	description: "Kafa Schema Mutation Root",
 	fields: () => ({
-		createKafa: {
+		incrementKafa: {
 			type: new GraphQLNonNull(kafaTypes.KafaType),
 			args: {
 				input: {
-					type: new GraphQLNonNull(kafaTypes.KafaCreateInputType),
+					type: new GraphQLNonNull(kafaTypes.KafaIncrementInputType),
 				},
 			},
-			resolve: function (parent, {
-				input
-			}, context) {
+			resolve: function (parent, { input }, context) {
 				config.securityPointForCreateSource(context.rootValue, ['user', 'admin']);
-				return kafaModel.create(input).exec()
-				.then(function (kafa) {
-					return kafa
-				})
+				return kafaModel.findOneAndUpdate({
+					user_id: context.rootValue.user._id,
+					torrent_id: input.torrent_id}, {
+						"$inc": {"kafa_count": 1}
+					}, {upsert: true, new:true})
+					.then((kafa) => {
+						return kafa
+					})
+					.catch((err) => {
+						throw err;
+					})
 			}
 		},
 		updateKafa: {

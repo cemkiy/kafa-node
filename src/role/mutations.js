@@ -40,7 +40,7 @@ const RoleMutationRootType = module.exports = new GraphQLObjectType({
 				input
 			}, context) {
 				config.securityPointForCreateSource(context.rootValue, ['admin']);
-				return roleModel.create(input).exec()
+				return roleModel.new(input)
 				.then(function (role) {
 					return role
 				})
