@@ -1,4 +1,4 @@
-// roots schemas
+// Root schemas
 const roleQueryRoot = require('./queries.js');
 const roleMutationRoot = require('./mutations.js');
 

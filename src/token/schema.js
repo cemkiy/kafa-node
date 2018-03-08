@@ -1,4 +1,4 @@
-// roots schemas
+// Root schemas
 const tokenMutationRoot = require('./mutations.js');
 const tokenQueryRoot = require('./queries.js');
 

@@ -1,5 +1,3 @@
-
-
 module.exports.securityPointForCreateSource = function(request, types_of_permits) {
   if(types_of_permits.indexOf(request.user.role) == -1)
     throw new Error("You are making an unauthorized request. If you think it's a mistake, you can contact us.");

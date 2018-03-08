@@ -1,4 +1,4 @@
-// roots schemas
+// Root schemas
 const torrentQueryRoot = require('./queries.js');
 const torrentMutationRoot = require('./mutations.js');
 

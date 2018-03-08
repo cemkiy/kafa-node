@@ -1,4 +1,4 @@
-// roots schemas
+// Root schemas
 const kafaQueryRoot = require('./queries.js');
 const kafaMutationRoot = require('./mutations.js');
 

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// const bcrypt = require('bcryptjs');
 
 // Language Schema
 const LanguageSchema = mongoose.Schema({

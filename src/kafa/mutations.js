@@ -1,3 +1,4 @@
+// Config files
 const config = require('../config/security.js');
 
 // Mongoose schemas
