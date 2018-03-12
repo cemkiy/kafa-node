@@ -84,6 +84,9 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 						roleModel.new({
 							user_id: user.id
 						});
+						mailgun.sendMail(user.email, "Account Verification",
+						"Please confirm your email with click below button.",
+						"Confirm Your Email", "http://api.kafa.io/activation/" + user.email_activation_key);
 						return user;
 					})
 					.catch((err) => {
