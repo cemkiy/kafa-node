@@ -81,13 +81,30 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 			}, context) {
 				return userModel.new(input)
 					.then(function (user) {
-						roleModel.new({
-							user_id: user.id
-						});
 						mailgun.sendMail(user.email, "Account Verification",
 						"Please confirm your email with click below button.",
 						"Confirm Your Email", "http://api.kafa.io/activation/" + user.email_activation_key);
 						return user;
+					})
+					.catch((err) => {
+						throw err;
+					})
+			}
+		},
+		verifiedUser: {
+			type: GraphQLString,
+			args: {
+				verification_key :{type: new GraphQLNonNull(GraphQLString)}
+			},
+			resolve: function (parent, args, context) {
+				return userModel.findOneAndUpdate({email_verification_key:verification_key}, {
+						"$set": {verified:true}
+					}).exec()
+					.then((user) => {
+						roleModel.new({
+							user_id: user.id
+						});
+						return user
 					})
 					.catch((err) => {
 						throw err;

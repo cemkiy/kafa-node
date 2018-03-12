@@ -30,7 +30,7 @@ const UserSchema = mongoose.Schema({
 		type: Date,
 		required: true
 	},
-	email_activation_key: {
+	email_verification_key: {
 		type: String
 	},
 	forgot_password_token: {
@@ -58,7 +58,7 @@ module.exports.new = function (input) {
 	var salt = bcrypt.genSaltSync(10);
 	var hash = bcrypt.hashSync(input.password, salt);
 	input.password = hash;
-	input.email_activation_key = crypto.randomBytes(20).toString('hex');
+	input.email_verification_key = crypto.randomBytes(20).toString('hex');
 	return User.create(input);
 }
 
