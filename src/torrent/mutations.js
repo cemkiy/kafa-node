@@ -55,8 +55,8 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 				},
 			},
 			resolve: function (parent, args, context) {
-				config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'admin']);
-				return torrentModel.findByIdAndUpdate(args.id, {
+				query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'user', 'admin']);
+				return torrentModel.findOneAndUpdate(query, {
 						"$set": args.input
 					}).exec()
 					.then((torrent) => {
@@ -75,8 +75,8 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
-				config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'admin']);
-				return torrentModel.findByIdAndRemove(args.id).exec()
+				query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'user', 'admin']);
+				return torrentModel.findOneAndRemove(query).exec()
 					.then(() => {
 						return "deleted"
 					})
