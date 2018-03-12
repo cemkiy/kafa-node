@@ -48,6 +48,7 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 				delete input.password;
 				return userModel.getOne(input)
 					.then((user) => {
+						if(!user.verified) throw new Error("You are not verified!");
 						if (userModel.comparePassword(input_password, user.password)) {
 							const token = jwt.sign({
 								user
