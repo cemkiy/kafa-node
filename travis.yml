@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "stable"
+env:
+  - PORT=3000
+  - DATABASE_URL="mongodb://travis:test@localhost:27017/kafa"
+  - SECRET_KEY="travis"
+services:
+  - mongodb
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
