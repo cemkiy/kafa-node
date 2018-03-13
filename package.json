@@ -7,7 +7,7 @@
   "author": "cemkiy <cemekiy@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "scripts/test.sh"
+    "test": "echo 'travis test'"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
