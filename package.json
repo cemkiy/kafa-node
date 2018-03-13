@@ -6,6 +6,9 @@
   "repository": "https://github.com/cemkiy/kafa-node.git",
   "author": "cemkiy <cemekiy@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "scripts/test.sh"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^5.0.1",
