@@ -2,6 +2,7 @@
 
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const mailgun = require('../kitbag/mailgun');
 
 // Mongoose schemas
 const userModel = require('../user/models.js');
@@ -67,7 +68,6 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 						}
 					})
 					.catch((err) => {
-						console.log();
 						throw err;
 					})
 			}

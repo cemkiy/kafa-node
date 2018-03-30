@@ -1,7 +1,7 @@
 const config = require('../config');
 const mustache = require('mustache');
+const path = require("path");
 const fs = require('fs');
-const mailgun = require('mailgun.js');
 
 // Mailgun
 const mailgun = require('mailgun.js');
@@ -25,7 +25,7 @@ module.exports.sendMail = function(to, subject, message, button_text, button_lin
       subject: subject,
       html: output
     })
-      .then(msg => console.log(msg)) // logs response data
+      .then(msg => console.log("Sended email")) // logs response data
       .catch(err => console.log(err)); // logs any error
   });
 }
