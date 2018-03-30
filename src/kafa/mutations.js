@@ -38,7 +38,7 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 				},
 			},
 			resolve: function (parent, { input }, context) {
-				config.securityPointForCreateSource(context.rootValue, ['user', 'admin']);
+				config.securityPointForCreateSource(context.rootValue, ['captain', 'buccaneer', 'privateer']);
 				return kafaModel.findOneAndUpdate({
 					user_id: context.rootValue.user._id,
 					torrent_id: input.torrent_id}, {
@@ -63,7 +63,7 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
-				query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'user', 'admin']);
+				query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer']);
 				return kafaModel.findOneAndUpdate(query, {
 						"$set": args.input
 					}).exec()
@@ -83,7 +83,7 @@ const KafaMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
-				query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'user', 'admin']);
+				query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer']);
 				return kafaModel.findOneAndRemove(query).exec()
 					.then(() => {
 						return "deleted"

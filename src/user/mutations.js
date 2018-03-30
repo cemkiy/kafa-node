@@ -41,7 +41,7 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
-				query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'user','admin']);
+				query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer']);
 				return userModel.findOneAndUpdate(query, {
 						"$set": args.input
 					}).exec()
@@ -61,7 +61,7 @@ const UserMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
-				query = config.securityPointForChangeSource(context.rootValue, args.id, ['admin']);
+				query = config.securityPointForChangeSource(context.rootValue, args.id, ['privateer']);
 				return userModel.findOneAndRemove(query).exec()
 					.then(() => {
 						return "deleted"

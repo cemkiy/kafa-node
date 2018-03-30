@@ -9,6 +9,7 @@ const tokenSchema = require('./src/token/schema.js');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const config = require('./src/config');
+const cors = require('cors');
 
 mongoose.Promise = global.Promise;
 // Connect to Database
@@ -33,7 +34,7 @@ app.use(passport.session());
 
 require('./src/config/passport')(passport);
 
-app.use("/graphql/users", passport.authenticate('jwt', {
+app.use("/graphql/users", cors(), passport.authenticate('jwt', {
 	session: false
 }), graphqlHTTP(request => ({
 	schema: userSchema,
@@ -41,7 +42,7 @@ app.use("/graphql/users", passport.authenticate('jwt', {
 	graphiql: true,
 })));
 
-app.use('/graphql/torrents', passport.authenticate('jwt', {
+app.use('/graphql/torrents', cors(), passport.authenticate('jwt', {
 	session: false
 }), graphqlHTTP(request => ({
 	schema: torrentSchema,
@@ -49,7 +50,7 @@ app.use('/graphql/torrents', passport.authenticate('jwt', {
 	graphiql: true,
 })));
 
-app.use('/graphql/kafas', passport.authenticate('jwt', {
+app.use('/graphql/kafas', cors(), passport.authenticate('jwt', {
 	session: false
 }), graphqlHTTP(request => ({
 	schema: kafaSchema,
@@ -57,7 +58,7 @@ app.use('/graphql/kafas', passport.authenticate('jwt', {
 	graphiql: true,
 })));
 
-app.use('/graphql/roles', passport.authenticate('jwt', {
+app.use('/graphql/roles', cors(), passport.authenticate('jwt', {
 	session: false
 }), graphqlHTTP(request => ({
 	schema: roleSchema,
@@ -65,10 +66,10 @@ app.use('/graphql/roles', passport.authenticate('jwt', {
 	graphiql: true,
 })));
 
-app.use('/graphql/token', graphqlHTTP({
+app.use('/graphql/token', cors(), graphqlHTTP({
 	schema: tokenSchema,
 	graphiql: true
 }));
 
 app.listen(port);
-console.log('3..2..1... firing -> ' + port);
+console.log('All hand hoay! -> ' + port);
