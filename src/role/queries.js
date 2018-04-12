@@ -92,6 +92,23 @@ const RoleQueryRootType = module.exports = new GraphQLObjectType({
 					return role;
 				});
 			}
+		},
+		roleByUserId: {
+			type: new GraphQLNonNull(roleTypes.RoleType),
+			description: "Get role by user id",
+			args: {
+				user_id: {
+					name: 'user_id',
+					type: new GraphQLNonNull(GraphQLString)
+				}
+			},
+			resolve: function (parent, args, ast) {
+				return roleModel.getOne(args, (err, role) => {
+					if (err)
+						throw err;
+					return role;
+				});
+			}
 		}
 	})
 });

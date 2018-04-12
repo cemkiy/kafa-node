@@ -46,7 +46,7 @@ const RoleCreateInputType = new GraphQLInputObjectType({
 			type: new GraphQLNonNull(GraphQLString)
 		},
 		type: {
-			new GraphQLNonNull(GraphQLString)
+			type: new GraphQLNonNull(GraphQLString)
 		}
 	})
 })

@@ -2,6 +2,7 @@
 
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
+const roleSchema = require('./src/role/schema.js');
 const userSchema = require('./src/user/schema.js');
 const torrentSchema = require('./src/torrent/schema.js');
 const kafaSchema = require('./src/kafa/schema.js');

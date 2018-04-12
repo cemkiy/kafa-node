@@ -32,6 +32,14 @@ module.exports.new = function (input) {
 	return Role.create(input);
 }
 
+module.exports.getById = function (id, callback) {
+	return Role.findById(id, callback);
+}
+
+module.exports.getOne = function (query, callback) {
+	return Role.findOne(query, callback);
+}
+
 module.exports.list = function (filter, callback) {
 	let limit = 25
 	let skip = 0
