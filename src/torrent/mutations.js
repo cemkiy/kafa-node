@@ -50,6 +50,9 @@ const TorrentMutationRootType = module.exports = new GraphQLObjectType({
 		updateTorrent: {
 			type: new GraphQLNonNull(torrentTypes.TorrentType),
 			args: {
+				id: {
+					type: new GraphQLNonNull(GraphQLString),
+				},
 				input: {
 					type: new GraphQLNonNull(torrentTypes.TorrentUpdateInputType),
 				},
