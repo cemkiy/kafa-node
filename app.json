@@ -1,0 +1,22 @@
+{
+  "name": "kafa.io",
+  "description": "for the 21st Century...Centuries-awaited project...",
+  "repository": "https://github.com/cemkiy/kafa-node",
+  "logo": "https://cdn.dribbble.com/users/2122208/screenshots/4276520/11-20_tshirt_design-12.png",
+  "keywords": ["node", "express", "graphql", "heroku"],
+  "image": "heroku/nodejs",
+  "env": {
+    "PORT": {
+      "description": "Running port.",
+      "value": "3000"
+    },
+    "DATABASE_URL": {
+      "description": "Mongolab URL.",
+      "value": "mongodb://heroku:heroku@ds111279.mlab.com:11279/kafa"
+    },
+    "SECRET_KEY": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "value": "kafa"
+    },
+  }
+}
