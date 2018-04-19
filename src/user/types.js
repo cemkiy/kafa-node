@@ -28,6 +28,9 @@ const UserType = new GraphQLObjectType({
 		email: {
 			type: new GraphQLNonNull(GraphQLString)
 		},
+		about: {
+			type: GraphQLString
+		},
 		birthday: {
 			type: new GraphQLNonNull(GraphQLString)
 		},
@@ -54,6 +57,9 @@ const UserCreateInputType = new GraphQLInputObjectType({
 		password: {
 			type: new GraphQLNonNull(GraphQLString)
 		},
+		about: {
+			type: GraphQLString
+		},
 		birthday: {
 			type: new GraphQLNonNull(GraphQLString)
 		}
@@ -72,6 +78,9 @@ const UserUpdateInputType = new GraphQLInputObjectType({
 			type: GraphQLString
 		},
 		password: {
+			type: GraphQLString
+		},
+		about: {
 			type: GraphQLString
 		},
 		birthday: {
