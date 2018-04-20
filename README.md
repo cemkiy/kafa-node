@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/cemkiy/kafa-node.svg?branch=master)](https://travis-ci.org/cemkiy/kafa-node)
+![alt text](https://github.com/cemkiy/kafa-react/blob/master/src/logo.gif)
 
 # kafa.io
 for the 21st Century...Centuries-awaited project...
