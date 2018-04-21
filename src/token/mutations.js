@@ -86,7 +86,7 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 					.then(function (user) {
 						mailgun.sendMail(user.email, "Account Verification",
 						"Please confirm your email with click below button.",
-						"Confirm Your Email", "http://api.kafa.io/activation/" + user.email_activation_key);
+						"Confirm Your Email", "http://api.kafa.io/activation/" + user.email_verification_key);
 						return user;
 					})
 					.catch((err) => {
