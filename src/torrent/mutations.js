@@ -9,11 +9,8 @@ const torrentTypes = require('./types.js');
 
 let {
 	GraphQLString,
-	GraphQLInt,
-	GraphQLList,
 	GraphQLObjectType,
-	GraphQLNonNull,
-	GraphQLSchema
+	GraphQLNonNull
 } = require('graphql');
 
 // mutation {

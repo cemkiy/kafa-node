@@ -3,11 +3,6 @@ const kafaQueryRoot = require('./queries.js');
 const kafaMutationRoot = require('./mutations.js');
 
 let {
-  GraphQLString,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLNonNull,
   GraphQLSchema
 } = require('graphql');
 

@@ -3,11 +3,6 @@ const roleQueryRoot = require('./queries.js');
 const roleMutationRoot = require('./mutations.js');
 
 let {
-  GraphQLString,
-  GraphQLInt,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLNonNull,
   GraphQLSchema
 } = require('graphql');
 

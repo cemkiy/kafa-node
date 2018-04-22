@@ -5,11 +5,8 @@ const userModel = require('../user/models.js');
 
 let {
  GraphQLString,
- GraphQLInt,
- GraphQLList,
  GraphQLObjectType,
  GraphQLNonNull,
- GraphQLSchema,
  GraphQLInputObjectType
 } = require('graphql');
 

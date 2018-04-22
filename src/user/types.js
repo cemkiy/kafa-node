@@ -2,9 +2,11 @@
 
 // Mongoose schemas
 const roleModel = require('../role/models.js');
+const torrentModel = require('../torrent/models.js');
 
 // Graphql Types
 const roleTypes = require('../role/types.js');
+const torrentTypes = require('../torrent/types.js');
 
 
 let {
@@ -34,8 +36,17 @@ const UserType = new GraphQLObjectType({
 		role: {
 			type: new GraphQLNonNull(roleTypes.RoleType),
 			resolve: function (user) {
-				console.log(user);
-				return roleModel.getOne({user_id:user.id}, (err, role) => {
+				return roleModel.getOne({user_id: user.id}, (err, role) => {
+					if (err)
+						throw err;
+					return role;
+				});
+			}
+		},
+		torrents: {
+			type: new GraphQLList(torrentTypes.TorrentType),
+			resolve: function (user) {
+				return torrentModel.list({user_id: user.id}, (err, role) => {
 					if (err)
 						throw err;
 					return role;
