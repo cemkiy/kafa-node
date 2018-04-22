@@ -3,8 +3,6 @@
 // Mongoose schemas
 const userModel = require('../user/models.js');
 
-// Graphql Types
-const userTypes = require('../user/types.js');
 
 let {
 	GraphQLString,
@@ -22,16 +20,7 @@ const RoleType = new GraphQLObjectType({
 	description: "This represent a role",
 	fields: () => ({
 		id: { type: new GraphQLNonNull(GraphQLString)},
-		user: {
-			type: new GraphQLNonNull(userTypes.UserType),
-			resolve: function (role) {
-				return userModel.getById(role.id, (err, user) => {
-					if (err)
-						throw err;
-					return user;
-				});
-			}
-		},
+		user_id: { type: new GraphQLNonNull(GraphQLString)},
 		type: {
 			type: new GraphQLNonNull(GraphQLString)
 		}
