@@ -85,7 +85,7 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 					.then(function (user) {
 						mailgun.sendMail(user.email, "Account Verification",
 						"Please confirm your email with click below button.",
-						"Confirm Your Email", "http://api.kafa.io/activation/" + user.email_verification_key);
+						"Confirm Your Email", "http://kafa.io/activation/" + user.email_verification_key);
 						return user;
 					})
 					.catch((err) => {
@@ -93,13 +93,13 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 					})
 			}
 		},
-		verifiedUser: {
+		verifyUser: {
 			type: GraphQLString,
 			args: {
-				verification_key :{type: new GraphQLNonNull(GraphQLString)}
+				email_verification_key :{type: new GraphQLNonNull(GraphQLString)}
 			},
 			resolve: function (parent, args, context) {
-				return userModel.findOneAndUpdate({email_verification_key:verification_key}, {
+				return userModel.findOneAndUpdate(args, {
 						"$set": {verified:true}
 					}).exec()
 					.then((user) => {
@@ -121,15 +121,13 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 				}
 			},
 			resolve: function (parent, args, context) {
-				var user = {};
-				user.forgot_password_token = crypto.randomBytes(20).toString('hex');
 				return userModel.findOneAndUpdate(query, {
-						"$set": user
+						"$set": {forgot_password_token: crypto.randomBytes(20).toString('hex')}
 					}).exec()
 					.then((user) => {
 						mailgun.sendMail(user.email, "Forgot Password",
 						"Please click below button and change your password.",
-						"Change Your Password", "http://api.kafa.io/forgot_pass/" + user.forgot_password_token);
+						"Change Your Password", "http://kafa.io/forgot_pass/" + user.forgot_password_token);
 						return "Check Your Email"
 					})
 					.catch((err) => {
