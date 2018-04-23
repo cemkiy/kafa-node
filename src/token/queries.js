@@ -1,5 +1,6 @@
 let {
-	GraphQLObjectType
+	GraphQLObjectType,
+	GraphQLString
 } = require('graphql');
 
 // This is the Root Query
