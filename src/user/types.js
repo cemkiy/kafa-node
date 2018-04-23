@@ -96,20 +96,30 @@ const UserUpdateInputType = new GraphQLInputObjectType({
 	name: "UserUpdateInputType",
 	description: "This represent an user",
 	fields: () => ({
-		username: {
-			type: GraphQLString
-		},
-		email: {
-			type: GraphQLString
-		},
-		password: {
-			type: GraphQLString
-		},
 		about: {
 			type: GraphQLString
-		},
-		birthday: {
-			type: GraphQLString
+		}
+	})
+});
+
+// UserChangeEmailInputType for mutation
+const UserChangeEmailInputType = new GraphQLInputObjectType({
+	name: "UserChangeEmailInputType",
+	description: "This represent an user",
+	fields: () => ({
+		email: {
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	})
+});
+
+// UserChangePassInputType for mutation
+const UserChangePassInputType = new GraphQLInputObjectType({
+	name: "UserChangePassInputType",
+	description: "This represent an user",
+	fields: () => ({
+		password: {
+			type: new GraphQLNonNull(GraphQLString)
 		}
 	})
 });
@@ -117,5 +127,7 @@ const UserUpdateInputType = new GraphQLInputObjectType({
 module.exports = {
 	UserType,
 	UserCreateInputType,
-	UserUpdateInputType
+	UserUpdateInputType,
+	UserChangePassInputType,
+	UserChangeEmailInputType
 }

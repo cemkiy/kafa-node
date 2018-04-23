@@ -55,12 +55,14 @@ module.exports.comparePassword = function(password, hash) {
   return bcrypt.compareSync(password, hash);
 }
 
+module.exports.createPasswordHash = function(password) {
+	var salt = bcrypt.genSaltSync(10);
+	return bcrypt.hashSync(password, salt);
+}
+
 // Create User
 module.exports.new = function (input) {
 	input.birthday = new Date(input.birthday);
-	var salt = bcrypt.genSaltSync(10);
-	var hash = bcrypt.hashSync(input.password, salt);
-	input.password = hash;
 	input.email_verification_key = crypto.randomBytes(20).toString('hex');
 	return User.create(input);
 }

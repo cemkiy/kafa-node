@@ -1,6 +1,7 @@
 
 
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const config = require('../config');
 const mailgun = require('../kitbag/mailgun');
 
@@ -79,6 +80,7 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 			resolve: function (parent, {
 				input
 			}, context) {
+				input.password = userModel.createPasswordHash(input.password);
 				return userModel.new(input)
 					.then(function (user) {
 						mailgun.sendMail(user.email, "Account Verification",
@@ -104,6 +106,56 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 						roleModel.new({
 							user_id: user.id
 						});
+						return user
+					})
+					.catch((err) => {
+						throw err;
+					})
+			}
+		},
+		forgotPass: {
+			type: new GraphQLNonNull(GraphQLString),
+			args: {
+				email: {
+					type: new GraphQLNonNull(GraphQLString),
+				}
+			},
+			resolve: function (parent, args, context) {
+				var user = {};
+				user.forgot_password_token = crypto.randomBytes(20).toString('hex');
+				return userModel.findOneAndUpdate(query, {
+						"$set": user
+					}).exec()
+					.then((user) => {
+						mailgun.sendMail(user.email, "Forgot Password",
+						"Please click below button and change your password.",
+						"Change Your Password", "http://api.kafa.io/forgot_pass/" + user.forgot_password_token);
+						return "Check Your Email"
+					})
+					.catch((err) => {
+						throw err;
+					})
+			}
+		},
+		forgotPassComplete: {
+			type: new GraphQLNonNull(userTypes.UserType),
+			args: {
+				forgot_password_token: {
+					type: new GraphQLNonNull(GraphQLString),
+				},
+				input: {
+					type: new GraphQLNonNull(userTypes.UserChangePassInputType),
+				}
+			},
+			resolve: function (parent, args, context) {
+				args.input.password = crypto.randomBytes(20).toString('hex');
+				return userModel.findOneAndUpdate(query, {
+						"$set": args.input
+					}).exec()
+					.then((user) => {
+						mailgun.sendMail(user.email, "Your Password Changed",
+						"This email sended for information.",
+						"Go to kafa.io", "http://kafa.io/");
 						return user
 					})
 					.catch((err) => {
