@@ -3,11 +3,6 @@ const userQueryRoot = require('./queries.js');
 const userMutationRoot = require('./mutations.js');
 
 let {
-	GraphQLString,
-	GraphQLInt,
-	GraphQLList,
-	GraphQLObjectType,
-	GraphQLNonNull,
 	GraphQLSchema
 } = require('graphql');
 

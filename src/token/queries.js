@@ -1,12 +1,6 @@
-
-
 let {
-	GraphQLString,
-	GraphQLInt,
-	GraphQLList,
 	GraphQLObjectType,
-	GraphQLNonNull,
-	GraphQLSchema
+	GraphQLString
 } = require('graphql');
 
 // This is the Root Query

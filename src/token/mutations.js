@@ -1,6 +1,7 @@
 
 
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const config = require('../config');
 const mailgun = require('../kitbag/mailgun');
 
@@ -14,11 +15,8 @@ const userTypes = require('../user/types.js');
 
 let {
 	GraphQLString,
-	GraphQLInt,
-	GraphQLList,
 	GraphQLObjectType,
-	GraphQLNonNull,
-	GraphQLSchema
+	GraphQLNonNull
 } = require('graphql');
 
 // mutation {
@@ -82,11 +80,12 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 			resolve: function (parent, {
 				input
 			}, context) {
+				input.password = userModel.createPasswordHash(input.password);
 				return userModel.new(input)
 					.then(function (user) {
 						mailgun.sendMail(user.email, "Account Verification",
 						"Please confirm your email with click below button.",
-						"Confirm Your Email", "http://api.kafa.io/activation/" + user.email_activation_key);
+						"Confirm Your Email", "http://kafa.io/activation/" + user.email_verification_key);
 						return user;
 					})
 					.catch((err) => {
@@ -94,19 +93,67 @@ const TokenMutationRootType = module.exports = new GraphQLObjectType({
 					})
 			}
 		},
-		verifiedUser: {
+		verifyUser: {
 			type: GraphQLString,
 			args: {
-				verification_key :{type: new GraphQLNonNull(GraphQLString)}
+				email_verification_key :{type: new GraphQLNonNull(GraphQLString)}
 			},
 			resolve: function (parent, args, context) {
-				return userModel.findOneAndUpdate({email_verification_key:verification_key}, {
+				return userModel.findOneAndUpdate(args, {
 						"$set": {verified:true}
 					}).exec()
 					.then((user) => {
 						roleModel.new({
 							user_id: user.id
 						});
+						return user
+					})
+					.catch((err) => {
+						throw err;
+					})
+			}
+		},
+		forgotPass: {
+			type: new GraphQLNonNull(GraphQLString),
+			args: {
+				email: {
+					type: new GraphQLNonNull(GraphQLString),
+				}
+			},
+			resolve: function (parent, args, context) {
+				return userModel.findOneAndUpdate(query, {
+						"$set": {forgot_password_token: crypto.randomBytes(20).toString('hex')}
+					}).exec()
+					.then((user) => {
+						mailgun.sendMail(user.email, "Forgot Password",
+						"Please click below button and change your password.",
+						"Change Your Password", "http://kafa.io/forgot_pass/" + user.forgot_password_token);
+						return "Check Your Email"
+					})
+					.catch((err) => {
+						throw err;
+					})
+			}
+		},
+		forgotPassComplete: {
+			type: new GraphQLNonNull(userTypes.UserType),
+			args: {
+				forgot_password_token: {
+					type: new GraphQLNonNull(GraphQLString),
+				},
+				input: {
+					type: new GraphQLNonNull(userTypes.UserChangePassInputType),
+				}
+			},
+			resolve: function (parent, args, context) {
+				args.input.password = crypto.randomBytes(20).toString('hex');
+				return userModel.findOneAndUpdate(query, {
+						"$set": args.input
+					}).exec()
+					.then((user) => {
+						mailgun.sendMail(user.email, "Your Password Changed",
+						"This email sended for information.",
+						"Go to kafa.io", "http://kafa.io/");
 						return user
 					})
 					.catch((err) => {

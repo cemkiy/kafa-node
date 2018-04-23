@@ -1,13 +1,9 @@
 // Root schemas
-const tokenMutationRoot = require('./mutations.js');
 const tokenQueryRoot = require('./queries.js');
+const tokenMutationRoot = require('./mutations.js');
 
 let {
-	GraphQLString,
-	GraphQLInt,
-	GraphQLList,
 	GraphQLObjectType,
-	GraphQLNonNull,
 	GraphQLSchema
 } = require('graphql');
 

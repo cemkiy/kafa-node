@@ -1,7 +1,12 @@
 
 
 // Mongoose schemas
+const roleModel = require('../role/models.js');
 const torrentModel = require('../torrent/models.js');
+
+// Graphql Types
+const roleTypes = require('../role/types.js');
+const torrentTypes = require('../torrent/types.js');
 
 
 let {
@@ -27,6 +32,26 @@ const UserType = new GraphQLObjectType({
 		},
 		email: {
 			type: new GraphQLNonNull(GraphQLString)
+		},
+		role: {
+			type: new GraphQLNonNull(roleTypes.RoleType),
+			resolve: function (user) {
+				return roleModel.getOne({user_id: user.id}, (err, role) => {
+					if (err)
+						throw err;
+					return role;
+				});
+			}
+		},
+		torrents: {
+			type: new GraphQLList(torrentTypes.TorrentType),
+			resolve: function (user) {
+				return torrentModel.list({user_id: user.id}, (err, role) => {
+					if (err)
+						throw err;
+					return role;
+				});
+			}
 		},
 		about: {
 			type: GraphQLString
@@ -71,20 +96,30 @@ const UserUpdateInputType = new GraphQLInputObjectType({
 	name: "UserUpdateInputType",
 	description: "This represent an user",
 	fields: () => ({
-		username: {
-			type: GraphQLString
-		},
-		email: {
-			type: GraphQLString
-		},
-		password: {
-			type: GraphQLString
-		},
 		about: {
 			type: GraphQLString
-		},
-		birthday: {
-			type: GraphQLString
+		}
+	})
+});
+
+// UserChangeEmailInputType for mutation
+const UserChangeEmailInputType = new GraphQLInputObjectType({
+	name: "UserChangeEmailInputType",
+	description: "This represent an user",
+	fields: () => ({
+		email: {
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	})
+});
+
+// UserChangePassInputType for mutation
+const UserChangePassInputType = new GraphQLInputObjectType({
+	name: "UserChangePassInputType",
+	description: "This represent an user",
+	fields: () => ({
+		password: {
+			type: new GraphQLNonNull(GraphQLString)
 		}
 	})
 });
@@ -92,5 +127,7 @@ const UserUpdateInputType = new GraphQLInputObjectType({
 module.exports = {
 	UserType,
 	UserCreateInputType,
-	UserUpdateInputType
+	UserUpdateInputType,
+	UserChangePassInputType,
+	UserChangeEmailInputType
 }

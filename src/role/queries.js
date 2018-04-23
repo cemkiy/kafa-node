@@ -1,11 +1,9 @@
 
 
 // Mongoose schemas
-const userModel = require('../user/models.js');
 const roleModel = require('./models.js');
 
 // Graphql Types
-const userTypes = require('../user/types.js');
 const roleTypes = require('./types.js');
 
 let {
@@ -13,8 +11,7 @@ let {
 	GraphQLInt,
 	GraphQLList,
 	GraphQLObjectType,
-	GraphQLNonNull,
-	GraphQLSchema
+	GraphQLNonNull
 } = require('graphql');
 
 

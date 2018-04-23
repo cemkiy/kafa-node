@@ -3,24 +3,49 @@
 // Mongoose schemas
 const userModel = require('../user/models.js');
 
-// Graphql Types
-const userTypes = require('../user/types.js');
-
 let {
 	GraphQLString,
 	GraphQLInt,
 	GraphQLList,
 	GraphQLObjectType,
 	GraphQLNonNull,
-	GraphQLSchema,
 	GraphQLInputObjectType
 } = require('graphql');
+
+const UserType = new GraphQLObjectType({
+	name: "torrentUserType",
+	description: "This represent an user",
+	fields: () => ({
+		id: {
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		username: {
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		email: {
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		about: {
+			type: GraphQLString
+		},
+		birthday: {
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		created_at: {
+			type: new GraphQLNonNull(GraphQLString)
+		},
+		updated_at: {
+			type: new GraphQLNonNull(GraphQLString)
+		}
+	})
+});
+
 
 const CommentType = new GraphQLObjectType({
 	name: 'CommentType',
 	fields: () => ({
 		user: {
-			type: new GraphQLNonNull(userTypes.UserType),
+			type: new GraphQLNonNull(UserType),
 			resolve: function (comment) {
 				return userModel.getById(comment.id, (err, user) => {
 					if (err)
@@ -129,7 +154,7 @@ const TorrentType = new GraphQLObjectType({
 			type: new GraphQLNonNull(GraphQLString)
 		},
 		user: {
-			type: new GraphQLNonNull(userTypes.UserType),
+			type: new GraphQLNonNull(UserType),
 			resolve: function (torrent) {
 				return userModel.getById(torrent.user_id, (err, user) => {
 					if (err)

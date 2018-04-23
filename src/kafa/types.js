@@ -10,10 +10,8 @@ const torrentTypes = require('../torrent/types.js');
 let {
 	GraphQLString,
 	GraphQLInt,
-	GraphQLList,
 	GraphQLObjectType,
 	GraphQLNonNull,
-	GraphQLSchema,
 	GraphQLInputObjectType
 } = require('graphql');
 
