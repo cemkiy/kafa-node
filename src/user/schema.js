@@ -1,15 +1,15 @@
 // Root schemas
-const userQueryRoot = require('./queries.js');
-const userMutationRoot = require('./mutations.js');
+const userQueryRoot = require('./queries.js')
+const userMutationRoot = require('./mutations.js')
 
 let {
-	GraphQLSchema
-} = require('graphql');
+  GraphQLSchema
+} = require('graphql')
 
 // This is the schema declaration
 const UserAppSchema = new GraphQLSchema({
-	query: userQueryRoot,
-	mutation: userMutationRoot
-});
+  query: userQueryRoot,
+  mutation: userMutationRoot
+})
 
-module.exports = UserAppSchema;
+module.exports = UserAppSchema
