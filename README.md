@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/cemkiy/kafa-node.svg?branch=master)](https://travis-ci.org/cemkiy/kafa-node)
-![alt text](https://github.com/cemkiy/kafa-react/blob/master/src/logo.gif)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+![logo](https://github.com/cemkiy/kafa-react/blob/master/src/assets/img/logo.gif)
 
 # kafa.io
 for the 21st Century...Centuries-awaited project...
