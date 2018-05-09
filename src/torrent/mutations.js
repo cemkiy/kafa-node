@@ -27,8 +27,8 @@ const TorrentMutationRootType = new GraphQLObjectType({
       },
       resolve: function (parent, {
         input
-      }, context) {
-        config.securityPointForCreateSource(context.rootValue, ['captain', 'privateer'])
+      }, rootValue) {
+        config.securityPointForCreateSource(rootValue, ['captain', 'privateer'])
         return torrentModel.new(input)
           .then(function (torrent) {
             return torrent
@@ -45,8 +45,8 @@ const TorrentMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(torrentTypes.TorrentUpdateInputType)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'privateer'])
         return torrentModel.findOneAndUpdate(query, {
           '$set': args.input
         }).exec()
@@ -65,8 +65,8 @@ const TorrentMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'privateer'])
         return torrentModel.findOneAndRemove(query).exec()
           .then(() => {
             return 'deleted'

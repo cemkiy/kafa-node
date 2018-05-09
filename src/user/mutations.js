@@ -31,8 +31,8 @@ const UserMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(userTypes.UserUpdateInputType)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
         return userModel.findOneAndUpdate(query, {
           '$set': args.input
         }).exec()
@@ -54,8 +54,8 @@ const UserMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(userTypes.UserChangePassInputType)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
         args.input.password = userModel.createPasswordHash(args.input.password)
         return userModel.findOneAndUpdate(query, {
           '$set': args.input
@@ -78,8 +78,8 @@ const UserMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(userTypes.UserChangeEmailInputType)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
         args.input.email_verification_key = crypto.randomBytes(20).toString('hex')
         args.input.verified = false
         return userModel.findOneAndUpdate(query, {
@@ -103,8 +103,8 @@ const UserMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['privateer'])
         return userModel.findOneAndRemove(query).exec()
           .then(() => {
             return 'deleted'

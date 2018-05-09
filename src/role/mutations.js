@@ -27,8 +27,8 @@ const RoleMutationRootType = new GraphQLObjectType({
       },
       resolve: function (parent, {
         input
-      }, context) {
-        config.securityPointForCreateSource(context.rootValue, ['privateer'])
+      }, rootValue) {
+        config.securityPointForCreateSource(rootValue, ['privateer'])
         return roleModel.new(input)
           .then(function (role) {
             return role
@@ -45,8 +45,8 @@ const RoleMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(roleTypes.RoleUpdateInputType)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['privateer'])
         return roleModel.findOneAndUpdate(query, {
           '$set': args.input
         }).exec()
@@ -65,8 +65,8 @@ const RoleMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['privateer'])
         return roleModel.findOneAndRemove(query).exec()
           .then(() => {
             return 'deleted'

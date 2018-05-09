@@ -73,12 +73,10 @@ const TorrentSchema = mongoose.Schema({
     required: true
   },
   description: {
-    type: String,
-    required: true
+    type: String
   },
   size: {
-    type: Number,
-    required: true
+    type: Number
   },
   info_link: {
     type: String
@@ -86,7 +84,7 @@ const TorrentSchema = mongoose.Schema({
   status: {
     type: StatusSchema
   },
-  infoHash: {
+  info_hash: {
     type: String,
     required: true,
     unique: true,
@@ -102,7 +100,7 @@ const TorrentSchema = mongoose.Schema({
     type: TagSchema,
     required: true
   },
-  languages: {
+  language: {
     type: LanguageSchema,
     required: true
   },
@@ -173,8 +171,8 @@ module.exports.list = function (filter, callback) {
     }
   }
 
-  if (filter.infoHash) {
-    query['info_hash'] = filter.infoHash
+  if (filter.info_hash) {
+    query['info_hash'] = filter.info_hash
   }
 
   if (filter.tag) {
