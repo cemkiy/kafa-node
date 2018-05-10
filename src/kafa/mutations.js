@@ -25,10 +25,10 @@ const KafaMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(kafaTypes.KafaIncrementInputType)
         }
       },
-      resolve: function (parent, { input }, context) {
-        config.securityPointForCreateSource(context.rootValue, ['captain', 'buccaneer', 'privateer'])
+      resolve: function (parent, { input }, rootValue) {
+        config.securityPointForCreateSource(rootValue, ['captain', 'buccaneer', 'privateer'])
         return kafaModel.findOneAndUpdate({
-          user_id: context.rootValue.user._id,
+          user_id: rootValue.user._id,
           torrent_id: input.torrent_id}, {
           '$inc': {'kafa_count': 1}
         }, {upsert: true, new: true})
@@ -50,8 +50,8 @@ const KafaMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(kafaTypes.KafaUpdateInputType)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
         return kafaModel.findOneAndUpdate(query, {
           '$set': args.input
         }).exec()
@@ -70,8 +70,8 @@ const KafaMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: function (parent, args, context) {
-        let query = config.securityPointForChangeSource(context.rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
         return kafaModel.findOneAndRemove(query).exec()
           .then(() => {
             return 'deleted'

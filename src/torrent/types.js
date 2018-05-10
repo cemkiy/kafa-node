@@ -182,7 +182,7 @@ const TorrentType = new GraphQLObjectType({
     tag: {
       type: new GraphQLNonNull(TagType)
     },
-    languages: {
+    language: {
       type: new GraphQLNonNull(LanguageType)
     },
     kafa: {
@@ -209,10 +209,10 @@ const TorrentCreateInputType = new GraphQLInputObjectType({
       type: new GraphQLNonNull(GraphQLString)
     },
     description: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
     },
     size: {
-      type: new GraphQLNonNull(GraphQLInt)
+      type: GraphQLInt
     },
     info_link: {
       type: GraphQLString
@@ -226,7 +226,7 @@ const TorrentCreateInputType = new GraphQLInputObjectType({
     tag: {
       type: new GraphQLNonNull(TagInputType)
     },
-    languages: {
+    language: {
       type: new GraphQLNonNull(LanguageInputType)
     },
     status: {
@@ -264,7 +264,7 @@ const TorrentUpdateInputType = new GraphQLInputObjectType({
     tag: {
       type: TagInputType
     },
-    languages: {
+    language: {
       type: LanguageInputType
     },
     status: {
