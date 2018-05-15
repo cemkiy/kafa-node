@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/cemkiy/kafa-node.svg?branch=master)](https://travis-ci.org/cemkiy/kafa-node)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![Known Vulnerabilities](https://snyk.io/test/github/cemkiy/kafa-node/badge.svg)](https://snyk.io/test/github/cemkiy/kafa-node)
 ![logo](https://github.com/cemkiy/kafa-react/blob/master/src/assets/img/logo.gif)
 
 # kafa.io
