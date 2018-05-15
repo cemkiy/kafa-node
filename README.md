@@ -4,6 +4,8 @@
 ![logo](https://github.com/cemkiy/kafa-react/blob/master/src/assets/img/logo.gif)
 
 # kafa.io
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/cemkiy/kafa-node.svg)](https://greenkeeper.io/)
 for the 21st Century...Centuries-awaited project...
 
 kafa.io is new generation torrent site.
