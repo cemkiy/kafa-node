@@ -78,6 +78,9 @@ const TorrentSchema = mongoose.Schema({
   size: {
     type: Number
   },
+  imdb_id : {
+    type: String
+  },
   info_link: {
     type: String
   },

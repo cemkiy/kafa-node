@@ -30,6 +30,10 @@ const TorrentQueryRootType = new GraphQLObjectType({
           name: 'user_id',
           type: GraphQLString
         },
+        imdb_id: {
+          name: 'imdb_id',
+          type: GraphQLString
+        },
         info_link: {
           name: 'info_link',
           type: GraphQLString

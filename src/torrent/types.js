@@ -164,6 +164,9 @@ const TorrentType = new GraphQLObjectType({
     size: {
       type: new GraphQLNonNull(GraphQLInt)
     },
+    imdb_id: {
+      type: GraphQLString
+    },
     info_link: {
       type: GraphQLString
     },
@@ -214,6 +217,9 @@ const TorrentCreateInputType = new GraphQLInputObjectType({
     size: {
       type: GraphQLInt
     },
+    imdb_id: {
+      type: GraphQLString
+    },
     info_link: {
       type: GraphQLString
     },
@@ -251,6 +257,9 @@ const TorrentUpdateInputType = new GraphQLInputObjectType({
     },
     size: {
       type: GraphQLInt
+    },
+    imdb_id: {
+      type: GraphQLString
     },
     info_link: {
       type: GraphQLString
