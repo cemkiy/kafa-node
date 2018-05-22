@@ -1,6 +1,7 @@
 
 // Mongoose schemas
 const userModel = require('../user/models.js')
+const kafaModel = require('../kafa/models.js')
 
 let {
   GraphQLString,
@@ -189,7 +190,13 @@ const TorrentType = new GraphQLObjectType({
       type: new GraphQLNonNull(LanguageType)
     },
     kafa: {
-      type: new GraphQLNonNull(GraphQLInt)
+      type: GraphQLInt,
+      resolve: function (torrent) {
+         return kafaModel.total(torrent.id, (err, kafa) => {
+           if (err) { throw err }
+           return kafa[0].total
+         })
+      }
     },
     created_at: {
       type: new GraphQLNonNull(GraphQLString)
