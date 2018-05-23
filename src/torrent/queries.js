@@ -42,9 +42,9 @@ const TorrentQueryRootType = new GraphQLObjectType({
           name: 'info_hash',
           type: GraphQLString
         },
-        tag: {
-          name: 'tag',
-          type: GraphQLString
+        tags: {
+          name: 'tags',
+          type: new GraphQLList(GraphQLString)
         },
         categories: {
           name: 'categories',
@@ -64,6 +64,14 @@ const TorrentQueryRootType = new GraphQLObjectType({
         },
         kafa_to: {
           name: 'kafa_to',
+          type: GraphQLInt
+        },
+        download_count_from: {
+          name: 'download_count_from',
+          type: GraphQLInt
+        },
+        download_count_to: {
+          name: 'download_count_to',
           type: GraphQLInt
         },
         created_at_from: {

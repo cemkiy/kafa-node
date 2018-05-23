@@ -192,11 +192,18 @@ const TorrentType = new GraphQLObjectType({
     kafa: {
       type: GraphQLInt,
       resolve: function (torrent) {
-         return kafaModel.total(torrent.id, (err, kafa) => {
-           if (err) { throw err }
-           return kafa[0].total
-         })
+         return kafaModel.total(torrent.id).
+          then(kafa => {
+             return kafa[0].total
+           }).
+           catch(err => {
+             // TODO: Error report
+             return 0
+           })
       }
+    },
+    download_count: {
+      type: GraphQLInt
     },
     created_at: {
       type: new GraphQLNonNull(GraphQLString)
@@ -289,6 +296,16 @@ const TorrentUpdateInputType = new GraphQLInputObjectType({
   })
 })
 
+const TorrentIncrementInputType = new GraphQLInputObjectType({
+  name: 'TorrentIncrementInputType',
+  description: 'This represent a kafa',
+  fields: () => ({
+    torrent_id: {
+      type: new GraphQLNonNull(GraphQLString)
+    }
+  })
+})
+
 module.exports = {
   CommentType,
   TagType,
@@ -296,5 +313,6 @@ module.exports = {
   StatusType,
   TorrentType,
   TorrentCreateInputType,
-  TorrentUpdateInputType
+  TorrentUpdateInputType,
+  TorrentIncrementInputType
 }
