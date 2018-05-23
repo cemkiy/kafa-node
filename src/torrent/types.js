@@ -1,6 +1,7 @@
 
 // Mongoose schemas
 const userModel = require('../user/models.js')
+const kafaModel = require('../kafa/models.js')
 
 let {
   GraphQLString,
@@ -164,6 +165,9 @@ const TorrentType = new GraphQLObjectType({
     size: {
       type: new GraphQLNonNull(GraphQLInt)
     },
+    imdb_id: {
+      type: GraphQLString
+    },
     info_link: {
       type: GraphQLString
     },
@@ -186,7 +190,21 @@ const TorrentType = new GraphQLObjectType({
       type: new GraphQLNonNull(LanguageType)
     },
     kafa: {
-      type: new GraphQLNonNull(GraphQLInt)
+      type: GraphQLInt,
+      resolve: function (torrent) {
+        return kafaModel.total(torrent.id)
+          .then(kafa => {
+            return kafa[0].total
+          })
+          .catch(err => {
+            console.log(err)
+            // TODO: Error report
+            return 0
+          })
+      }
+    },
+    download_count: {
+      type: GraphQLInt
     },
     created_at: {
       type: new GraphQLNonNull(GraphQLString)
@@ -213,6 +231,9 @@ const TorrentCreateInputType = new GraphQLInputObjectType({
     },
     size: {
       type: GraphQLInt
+    },
+    imdb_id: {
+      type: GraphQLString
     },
     info_link: {
       type: GraphQLString
@@ -252,6 +273,9 @@ const TorrentUpdateInputType = new GraphQLInputObjectType({
     size: {
       type: GraphQLInt
     },
+    imdb_id: {
+      type: GraphQLString
+    },
     info_link: {
       type: GraphQLString
     },
@@ -273,6 +297,16 @@ const TorrentUpdateInputType = new GraphQLInputObjectType({
   })
 })
 
+const TorrentIncrementInputType = new GraphQLInputObjectType({
+  name: 'TorrentIncrementInputType',
+  description: 'This represent a kafa',
+  fields: () => ({
+    torrent_id: {
+      type: new GraphQLNonNull(GraphQLString)
+    }
+  })
+})
+
 module.exports = {
   CommentType,
   TagType,
@@ -280,5 +314,6 @@ module.exports = {
   StatusType,
   TorrentType,
   TorrentCreateInputType,
-  TorrentUpdateInputType
+  TorrentUpdateInputType,
+  TorrentIncrementInputType
 }

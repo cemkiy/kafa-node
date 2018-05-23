@@ -32,6 +32,22 @@ module.exports.new = function (input) {
   return Kafa.create(input)
 }
 
+module.exports.total = function (torrentId, callback) {
+  return Kafa.aggregate([
+    {
+      '$match': {
+        'torrent_id': torrentId
+      }
+    },
+    {
+      '$group': {
+        '_id': null,
+        'total': {$sum: '$kafa_count'}
+      }
+    }
+  ], callback)
+}
+
 module.exports.list = function (filter, callback) {
   let limit = 25
   let skip = 0

@@ -78,6 +78,9 @@ const TorrentSchema = mongoose.Schema({
   size: {
     type: Number
   },
+  imdb_id: {
+    type: String
+  },
   info_link: {
     type: String
   },
@@ -105,6 +108,10 @@ const TorrentSchema = mongoose.Schema({
     required: true
   },
   kafa: {
+    type: Number,
+    default: 0
+  },
+  download_count: {
     type: Number,
     default: 0
   },
@@ -175,8 +182,10 @@ module.exports.list = function (filter, callback) {
     query['info_hash'] = filter.info_hash
   }
 
-  if (filter.tag) {
-    query['tag.name'] = filter.tag
+  if (filter.tags) {
+    query['tag.name'] = {
+      '$in': filter.tags
+    }
   }
 
   if (filter.categories) {
@@ -202,6 +211,13 @@ module.exports.list = function (filter, callback) {
     if (filter.kafa_from) { kafaQuery['$gt'] = filter.kafa_from }
     if (filter.kafa_to) { kafaQuery['$lt'] = filter.kafa_to }
     query['kafa'] = kafaQuery
+  }
+
+  if (filter.download_count_from || filter.download_count_to) {
+    let downloadCountQuery = {}
+    if (filter.download_count_from) { downloadCountQuery['$gt'] = filter.download_count_from }
+    if (filter.download_count_to) { downloadCountQuery['$lt'] = filter.download_count_to }
+    query['download_count'] = downloadCountQuery
   }
 
   if (filter.created_at_from || filter.created_at_to) {

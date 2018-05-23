@@ -75,6 +75,27 @@ const TorrentMutationRootType = new GraphQLObjectType({
             throw err
           })
       }
+    },
+    incrementDownloadCount: {
+      type: new GraphQLNonNull(torrentTypes.TorrentType),
+      args: {
+        input: {
+          type: new GraphQLNonNull(torrentTypes.TorrentIncrementInputType)
+        }
+      },
+      resolve: function (parent, { input }, rootValue) {
+        config.securityPointForCreateSource(rootValue, ['captain', 'buccaneer', 'privateer'])
+        return torrentModel.findOneAndUpdate({
+          torrent_id: input.torrent_id}, {
+          '$inc': {'download_count': 1}
+        }, {})
+          .then((torrent) => {
+            return torrent
+          })
+          .catch((err) => {
+            throw err
+          })
+      }
     }
   })
 })
