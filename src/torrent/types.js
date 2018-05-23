@@ -192,14 +192,15 @@ const TorrentType = new GraphQLObjectType({
     kafa: {
       type: GraphQLInt,
       resolve: function (torrent) {
-         return kafaModel.total(torrent.id).
-          then(kafa => {
-             return kafa[0].total
-           }).
-           catch(err => {
-             // TODO: Error report
-             return 0
-           })
+        return kafaModel.total(torrent.id)
+          .then(kafa => {
+            return kafa[0].total
+          })
+          .catch(err => {
+            console.log(err)
+            // TODO: Error report
+            return 0
+          })
       }
     },
     download_count: {

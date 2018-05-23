@@ -32,11 +32,11 @@ module.exports.new = function (input) {
   return Kafa.create(input)
 }
 
-module.exports.total = function (torrent_id, callback) {
-   return Kafa.aggregate([
+module.exports.total = function (torrentId, callback) {
+  return Kafa.aggregate([
     {
       '$match': {
-        'torrent_id': torrent_id
+        'torrent_id': torrentId
       }
     },
     {
