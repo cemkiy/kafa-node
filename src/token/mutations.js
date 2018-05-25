@@ -91,7 +91,7 @@ const TokenMutationRootType = new GraphQLObjectType({
       resolve: function (parent, args, context) {
         return userModel.findOneAndUpdate(args, {
           '$set': {verified: true}
-        }).exec()
+        }, {new: true}).exec()
           .then((user) => {
             roleModel.new({
               user_id: user.id
@@ -113,7 +113,7 @@ const TokenMutationRootType = new GraphQLObjectType({
       resolve: function (parent, args, context) {
         return userModel.findOneAndUpdate(args, {
           '$set': {forgot_password_token: crypto.randomBytes(20).toString('hex')}
-        }).exec()
+        }, {new: true}).exec()
           .then((user) => {
             mailgun.sendMail(user.email, 'Forgot Password',
               'Please click below button and change your password.',
@@ -139,7 +139,7 @@ const TokenMutationRootType = new GraphQLObjectType({
         args.input.password = crypto.randomBytes(20).toString('hex')
         return userModel.findOneAndUpdate({'forgot_password_token': args.forgot_password_token}, {
           '$set': args.input
-        }).exec()
+        }, {new: true}).exec()
           .then((user) => {
             mailgun.sendMail(user.email, 'Your Password Changed',
               'This email sended for information.',

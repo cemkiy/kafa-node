@@ -49,7 +49,7 @@ const TorrentMutationRootType = new GraphQLObjectType({
         let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'privateer'])
         return torrentModel.findOneAndUpdate(query, {
           '$set': args.input
-        }).exec()
+        }, {new: true}).exec()
           .then((torrent) => {
             return torrent
           })
@@ -88,7 +88,7 @@ const TorrentMutationRootType = new GraphQLObjectType({
         return torrentModel.findOneAndUpdate({
           torrent_id: input.torrent_id}, {
           '$inc': {'download_count': 1}
-        }, {})
+        }, {new: true})
           .then((torrent) => {
             return torrent
           })

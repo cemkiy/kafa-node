@@ -283,7 +283,7 @@ const TorrentUpdateInputType = new GraphQLInputObjectType({
       type: GraphQLString
     },
     screens: {
-      type: GraphQLString
+      type: new GraphQLList(GraphQLString)
     },
     tag: {
       type: TagInputType
