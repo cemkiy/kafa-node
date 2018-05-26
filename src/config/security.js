@@ -1,4 +1,4 @@
-const ObjectId = require('mongoose').Types.ObjectId;
+const ObjectId = require('mongoose').Types.ObjectId
 
 module.exports.securityPointForCreateSource = function (request, typesOfPermits) {
   if (typesOfPermits.indexOf(request.user.role) === -1) {
