@@ -35,7 +35,7 @@ const UserMutationRootType = new GraphQLObjectType({
         let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
         return userModel.findOneAndUpdate(query, {
           '$set': args.input
-        }).exec()
+        }, {new: true}).exec()
           .then((user) => {
             return user
           })
@@ -59,7 +59,7 @@ const UserMutationRootType = new GraphQLObjectType({
         args.input.password = userModel.createPasswordHash(args.input.password)
         return userModel.findOneAndUpdate(query, {
           '$set': args.input
-        }).exec()
+        }, {new: true}).exec()
           .then((user) => {
             return user
           })
@@ -84,7 +84,7 @@ const UserMutationRootType = new GraphQLObjectType({
         args.input.verified = false
         return userModel.findOneAndUpdate(query, {
           '$set': args.input
-        }).exec()
+        }, {new: true}).exec()
           .then((user) => {
             mailgun.sendMail(user.email, 'Verified Your New Email',
               'Please confirm your email with click below button.',

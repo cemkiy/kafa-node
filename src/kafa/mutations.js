@@ -54,7 +54,7 @@ const KafaMutationRootType = new GraphQLObjectType({
         let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
         return kafaModel.findOneAndUpdate(query, {
           '$set': args.input
-        }).exec()
+        }, {new: true}).exec()
           .then((kafa) => {
             return kafa
           })

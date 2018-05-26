@@ -49,7 +49,7 @@ const RoleMutationRootType = new GraphQLObjectType({
         let query = config.securityPointForChangeSource(rootValue, args.id, ['privateer'])
         return roleModel.findOneAndUpdate(query, {
           '$set': args.input
-        }).exec()
+        }, {new: true}).exec()
           .then((role) => {
             return role
           })
