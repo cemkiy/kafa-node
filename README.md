@@ -3,6 +3,7 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Known Vulnerabilities](https://snyk.io/test/github/cemkiy/kafa-node/badge.svg)](https://snyk.io/test/github/cemkiy/kafa-node)
 [![Greenkeeper badge](https://badges.greenkeeper.io/cemkiy/kafa-node.svg)](https://greenkeeper.io/)
+[![David-DM badge](https://david-dm.org/cemkiy/kafa-node.svg)](https://david-dm.org/)
 
 # kafa.io
 
