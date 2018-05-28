@@ -49,8 +49,8 @@ const UserQueryRootType = new GraphQLObjectType({
           name: 'limit',
           type: GraphQLInt
         },
-        skip: {
-          name: 'skip',
+        page: {
+          name: 'page',
           type: GraphQLInt
         },
         sort_field: {

@@ -137,13 +137,13 @@ module.exports.getById = function (id, callback) {
 }
 
 module.exports.list = function (filter, callback) {
-  let limit = 25
+  let limit = 5
   let skip = 0
   let sort = {}
 
   if (filter.limit) { limit = filter.limit }
 
-  if (filter.skip) { skip = filter.skip }
+  if (filter.page) { skip =  filter.page > 0 ? ( ( filter.page - 1 ) * limit ) : 0 }
 
   if (filter.sort_field) {
     if (filter.sort_type) {

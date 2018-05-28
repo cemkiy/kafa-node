@@ -46,7 +46,7 @@ module.exports.list = function (filter, callback) {
 
   if (filter.limit) { limit = filter.limit }
 
-  if (filter.skip) { skip = filter.skip }
+  if (filter.page) { skip =  filter.page > 0 ? ( ( filter.page - 1 ) * limit ) : 0 }
 
   if (filter.sort_field) {
     if (filter.sort_type) {
