@@ -9,7 +9,7 @@ const LanguageSchema = mongoose.Schema({
   subtitles: {
     type: [String]
   }
-})
+}, { _id : false })
 
 // Status Schema
 const StatusSchema = mongoose.Schema({
@@ -21,7 +21,7 @@ const StatusSchema = mongoose.Schema({
     type: Number,
     default: 0
   }
-})
+}, { _id : false })
 
 // Comment Schema
 const CommentSchema = mongoose.Schema({
@@ -46,10 +46,6 @@ const CommentSchema = mongoose.Schema({
   }
 })
 
-CommentSchema.add({
-  subcomments: [CommentSchema]
-})
-
 // Tag Schema
 const TagSchema = mongoose.Schema({
   name: {
@@ -60,7 +56,7 @@ const TagSchema = mongoose.Schema({
     type: [String],
     required: true
   }
-})
+}, { _id : false })
 
 // Torrent Schema
 const TorrentSchema = mongoose.Schema({

@@ -79,16 +79,37 @@ const TorrentMutationRootType = new GraphQLObjectType({
     incrementDownloadCount: {
       type: new GraphQLNonNull(torrentTypes.TorrentType),
       args: {
-        input: {
-          type: new GraphQLNonNull(torrentTypes.TorrentIncrementInputType)
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
         }
       },
       resolve: function (parent, { input }, rootValue) {
-        config.securityPointForCreateSource(rootValue, ['captain', 'buccaneer', 'privateer'])
-        return torrentModel.findOneAndUpdate({
-          torrent_id: input.torrent_id}, {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['buccaneer', 'captain', 'privateer'])
+        return torrentModel.findOneAndUpdate(query, {
           '$inc': {'download_count': 1}
         }, {new: true})
+          .then((torrent) => {
+            return torrent
+          })
+          .catch((err) => {
+            throw err
+          })
+      }
+    },
+    addComment: {
+      type: new GraphQLNonNull(torrentTypes.TorrentType),
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        input: {
+          type: new GraphQLNonNull(torrentTypes.TorrentCommentInputType)
+        }
+      },
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['buccaneer', 'captain', 'privateer'])
+        return torrentModel.findOneAndUpdate(query, {'$push': {'comments': input}},
+          { new: true })
           .then((torrent) => {
             return torrent
           })
