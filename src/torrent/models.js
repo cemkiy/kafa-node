@@ -128,6 +128,63 @@ module.exports.new = function (input) {
   return Torrent.create(input)
 }
 
+module.exports.update = function (query, input) {
+  input.updated_at = new Date()
+  return Torrent.findOneAndUpdate(query, {
+    '$set': input
+    }, {new: true})
+}
+
+module.exports.updateById = function (id, input) {
+  input.updated_at = new Date()
+  return Torrent.findByIdAndUpdate(id, {
+    '$set': input
+    }, {new: true})
+}
+
+module.exports.addComment = function (id, user_id, text) {
+  let comment = {
+    'user_id': user_id,
+    'text': text
+  }
+  return Torrent.findByIdAndUpdate(id, {
+    '$push': {'comments': comment}
+    }, {new: true})
+}
+
+module.exports.updateComment = function (query, comment_id, text) {
+  return Torrent.findOneAndUpdate({
+    '_id': query._id,
+    'comments.user_id': query.user_id,
+    'comments._id': mongoose.Types.ObjectId(comment_id)
+  }, {
+      '$set': {
+        'comments.$.text': text,
+        'updated_at': new Date()
+      }
+    }, {new: true})
+}
+
+module.exports.removeComment = function (query, comment_id) {
+  return Torrent.findOneAndUpdate({
+    '_id': query._id,
+    'comments.user_id': query.user_id
+  }, {
+      '$pull': {
+        'comments._id': mongoose.Types.ObjectId(comment_id)
+      },
+      '$set': {
+        'deleted_at': new Date()
+      }
+    }, {new: true})
+}
+
+module.exports.incrementDownloadCount = function (query) {
+  return Torrent.findOneAndUpdate(query, {
+    '$inc': {'download_count': 1}
+  }, {new: true})
+}
+
 module.exports.getById = function (id, callback) {
   return Torrent.findById(id, callback)
 }

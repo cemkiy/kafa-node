@@ -127,6 +127,9 @@ const LanguageInputType = new GraphQLInputObjectType({
 const CommentInputType = new GraphQLObjectType({
   name: 'CommentInputType',
   fields: () => ({
+    comment_id: {
+      type: GraphQLString
+    },
     text: {
       type: new GraphQLNonNull(GraphQLString)
     }

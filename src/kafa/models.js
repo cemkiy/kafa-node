@@ -32,6 +32,29 @@ module.exports.new = function (input) {
   return Kafa.create(input)
 }
 
+module.exports.update = function (query, input) {
+  input.updated_at = new Date()
+  return Kafa.findOneAndUpdate(query, {
+    '$set': input
+    }, {new: true})
+}
+
+module.exports.updateById = function (id, input) {
+  input.updated_at = new Date()
+  return Kafa.findByIdAndUpdate(id, {
+    '$set': input
+    }, {new: true})
+}
+
+module.exports.incrementKafaCount = function (user_id, torrent_id) {
+  return Kafa.findOneAndUpdate({
+    'user_id': user_id,
+    'torrent_id': torrent_id}, {
+    '$inc': {'kafa_count': 1},
+    '$set': {'updated_at': new Date()}
+  }, {upsert: true, new: true})
+}
+
 module.exports.total = function (torrentId, callback) {
   return Kafa.aggregate([
     {

@@ -89,13 +89,11 @@ const TokenMutationRootType = new GraphQLObjectType({
         email_verification_key: {type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: function (parent, args, context) {
-        return userModel.findOneAndUpdate(args, {
-          '$set': {verified: true}
-        }, {new: true}).exec()
+        return userModel.update(args, {verified: true})
           .then((user) => {
             roleModel.new({
               user_id: user.id
-            })
+            }) // TODO: error handling
             return user
           })
           .catch((err) => {
@@ -111,9 +109,8 @@ const TokenMutationRootType = new GraphQLObjectType({
         }
       },
       resolve: function (parent, args, context) {
-        return userModel.findOneAndUpdate(args, {
-          '$set': {forgot_password_token: crypto.randomBytes(20).toString('hex')}
-        }, {new: true}).exec()
+        return userModel.update(args, {
+          forgot_password_token: crypto.randomBytes(20).toString('hex')})
           .then((user) => {
             mailgun.sendMail(user.email, 'Forgot Password',
               'Please click below button and change your password.',
@@ -137,9 +134,9 @@ const TokenMutationRootType = new GraphQLObjectType({
       },
       resolve: function (parent, args, context) {
         args.input.password = crypto.randomBytes(20).toString('hex')
-        return userModel.findOneAndUpdate({'forgot_password_token': args.forgot_password_token}, {
-          '$set': args.input
-        }, {new: true}).exec()
+        return userModel.update({
+          'forgot_password_token': args.forgot_password_token
+        }, args.input)
           .then((user) => {
             mailgun.sendMail(user.email, 'Your Password Changed',
               'This email sended for information.',
