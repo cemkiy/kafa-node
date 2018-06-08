@@ -33,6 +33,9 @@ const RoleMutationRootType = new GraphQLObjectType({
           .then(function (role) {
             return role
           })
+          .catch((err) => {
+            throw err
+          })
       }
     },
     updateRole: {
@@ -47,9 +50,7 @@ const RoleMutationRootType = new GraphQLObjectType({
       },
       resolve: function (parent, args, rootValue) {
         let query = config.securityPointForChangeSource(rootValue, args.id, ['privateer'])
-        return roleModel.findOneAndUpdate(query, {
-          '$set': args.input
-        }, {new: true}).exec()
+        return roleModel.update(query, args.input)
           .then((role) => {
             return role
           })
@@ -67,7 +68,7 @@ const RoleMutationRootType = new GraphQLObjectType({
       },
       resolve: function (parent, args, rootValue) {
         let query = config.securityPointForChangeSource(rootValue, args.id, ['privateer'])
-        return roleModel.findOneAndRemove(query).exec()
+        return roleModel.findOneAndRemove(query)
           .then(() => {
             return 'deleted'
           })

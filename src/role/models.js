@@ -31,6 +31,20 @@ module.exports.new = function (input) {
   return Role.create(input)
 }
 
+module.exports.update = function (query, input) {
+  input.updated_at = new Date()
+  return Role.findOneAndUpdate(query, {
+    '$set': input
+  }, {new: true})
+}
+
+module.exports.updateById = function (id, input) {
+  input.updated_at = new Date()
+  return Role.findByIdAndUpdate(id, {
+    '$set': input
+  }, {new: true})
+}
+
 module.exports.getById = function (id, callback) {
   return Role.findById(id, callback)
 }
@@ -46,7 +60,7 @@ module.exports.list = function (filter, callback) {
 
   if (filter.limit) { limit = filter.limit }
 
-  if (filter.skip) { skip = filter.skip }
+  if (filter.page) { skip = filter.page > 0 ? ((filter.page - 1) * limit) : 0 }
 
   if (filter.sort_field) {
     if (filter.sort_type) {

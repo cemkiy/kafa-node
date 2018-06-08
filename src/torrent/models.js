@@ -9,7 +9,7 @@ const LanguageSchema = mongoose.Schema({
   subtitles: {
     type: [String]
   }
-})
+}, { _id: false })
 
 // Status Schema
 const StatusSchema = mongoose.Schema({
@@ -21,7 +21,7 @@ const StatusSchema = mongoose.Schema({
     type: Number,
     default: 0
   }
-})
+}, { _id: false })
 
 // Comment Schema
 const CommentSchema = mongoose.Schema({
@@ -46,10 +46,6 @@ const CommentSchema = mongoose.Schema({
   }
 })
 
-CommentSchema.add({
-  subcomments: [CommentSchema]
-})
-
 // Tag Schema
 const TagSchema = mongoose.Schema({
   name: {
@@ -60,7 +56,7 @@ const TagSchema = mongoose.Schema({
     type: [String],
     required: true
   }
-})
+}, { _id: false })
 
 // Torrent Schema
 const TorrentSchema = mongoose.Schema({
@@ -132,18 +128,75 @@ module.exports.new = function (input) {
   return Torrent.create(input)
 }
 
+module.exports.update = function (query, input) {
+  input.updated_at = new Date()
+  return Torrent.findOneAndUpdate(query, {
+    '$set': input
+  }, {new: true})
+}
+
+module.exports.updateById = function (id, input) {
+  input.updated_at = new Date()
+  return Torrent.findByIdAndUpdate(id, {
+    '$set': input
+  }, {new: true})
+}
+
+module.exports.addComment = function (id, userId, text) {
+  let comment = {
+    'user_id': userId,
+    'text': text
+  }
+  return Torrent.findByIdAndUpdate(id, {
+    '$push': {'comments': comment}
+  }, {new: true})
+}
+
+module.exports.updateComment = function (query, commentId, text) {
+  return Torrent.findOneAndUpdate({
+    '_id': query._id,
+    'comments.user_id': query.user_id,
+    'comments._id': mongoose.Types.ObjectId(commentId)
+  }, {
+    '$set': {
+      'comments.$.text': text,
+      'updated_at': new Date()
+    }
+  }, {new: true})
+}
+
+module.exports.removeComment = function (query, commentId) {
+  return Torrent.findOneAndUpdate({
+    '_id': query._id,
+    'comments.user_id': query.user_id
+  }, {
+    '$pull': {
+      'comments._id': mongoose.Types.ObjectId(commentId)
+    },
+    '$set': {
+      'deleted_at': new Date()
+    }
+  }, {new: true})
+}
+
+module.exports.incrementDownloadCount = function (query) {
+  return Torrent.findOneAndUpdate(query, {
+    '$inc': {'download_count': 1}
+  }, {new: true})
+}
+
 module.exports.getById = function (id, callback) {
   return Torrent.findById(id, callback)
 }
 
 module.exports.list = function (filter, callback) {
-  let limit = 25
+  let limit = 5
   let skip = 0
   let sort = {}
 
   if (filter.limit) { limit = filter.limit }
 
-  if (filter.skip) { skip = filter.skip }
+  if (filter.page) { skip = filter.page > 0 ? ((filter.page - 1) * limit) : 0 }
 
   if (filter.sort_field) {
     if (filter.sort_type) {

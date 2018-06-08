@@ -32,10 +32,8 @@ const UserMutationRootType = new GraphQLObjectType({
         }
       },
       resolve: function (parent, args, rootValue) {
-        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
-        return userModel.findOneAndUpdate(query, {
-          '$set': args.input
-        }, {new: true}).exec()
+        config.securityPointForUserSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
+        return userModel.updateById(args.id, args.input)
           .then((user) => {
             return user
           })
@@ -55,11 +53,9 @@ const UserMutationRootType = new GraphQLObjectType({
         }
       },
       resolve: function (parent, args, rootValue) {
-        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
+        config.securityPointForUserSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
         args.input.password = userModel.createPasswordHash(args.input.password)
-        return userModel.findOneAndUpdate(query, {
-          '$set': args.input
-        }, {new: true}).exec()
+        return userModel.updateById(args.id, args.input)
           .then((user) => {
             return user
           })
@@ -79,12 +75,10 @@ const UserMutationRootType = new GraphQLObjectType({
         }
       },
       resolve: function (parent, args, rootValue) {
-        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
+        config.securityPointForUserSource(rootValue, args.id, ['source_owner', 'captain', 'buccaneer', 'privateer'])
         args.input.email_verification_key = crypto.randomBytes(20).toString('hex')
         args.input.verified = false
-        return userModel.findOneAndUpdate(query, {
-          '$set': args.input
-        }, {new: true}).exec()
+        return userModel.updateById(args.id, args.input)
           .then((user) => {
             mailgun.sendMail(user.email, 'Verified Your New Email',
               'Please confirm your email with click below button.',
@@ -104,8 +98,8 @@ const UserMutationRootType = new GraphQLObjectType({
         }
       },
       resolve: function (parent, args, rootValue) {
-        let query = config.securityPointForChangeSource(rootValue, args.id, ['privateer'])
-        return userModel.findOneAndRemove(query).exec()
+        config.securityPointForUserSource(rootValue, args.id, ['privateer'])
+        return userModel.findByIdAndRemove(args.id)
           .then(() => {
             return 'deleted'
           })

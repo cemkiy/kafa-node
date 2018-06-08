@@ -55,9 +55,6 @@ const CommentType = new GraphQLObjectType({
     text: {
       type: new GraphQLNonNull(GraphQLString)
     },
-    subcomments: {
-      type: new GraphQLList(CommentType)
-    },
     created_at: {
       type: new GraphQLNonNull(GraphQLString)
     },
@@ -123,6 +120,18 @@ const LanguageInputType = new GraphQLInputObjectType({
     },
     subtitles: {
       type: new GraphQLList(GraphQLString)
+    }
+  })
+})
+
+const CommentInputType = new GraphQLObjectType({
+  name: 'CommentInputType',
+  fields: () => ({
+    comment_id: {
+      type: GraphQLString
+    },
+    text: {
+      type: new GraphQLNonNull(GraphQLString)
     }
   })
 })
@@ -249,9 +258,6 @@ const TorrentCreateInputType = new GraphQLInputObjectType({
     },
     language: {
       type: new GraphQLNonNull(LanguageInputType)
-    },
-    status: {
-      type: StatusInputType
     }
   })
 })
@@ -297,23 +303,13 @@ const TorrentUpdateInputType = new GraphQLInputObjectType({
   })
 })
 
-const TorrentIncrementInputType = new GraphQLInputObjectType({
-  name: 'TorrentIncrementInputType',
-  description: 'This represent a kafa',
-  fields: () => ({
-    torrent_id: {
-      type: new GraphQLNonNull(GraphQLString)
-    }
-  })
-})
-
 module.exports = {
   CommentType,
   TagType,
   LanguageType,
   StatusType,
   TorrentType,
+  CommentInputType,
   TorrentCreateInputType,
-  TorrentUpdateInputType,
-  TorrentIncrementInputType
+  TorrentUpdateInputType
 }

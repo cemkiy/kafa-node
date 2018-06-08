@@ -65,7 +65,7 @@ const UserType = new GraphQLObjectType({
 // UserCreateInputType for mutation
 const UserCreateInputType = new GraphQLInputObjectType({
   name: 'UserCreateInputType',
-  description: 'This represent an user',
+  description: 'Used for create user',
   fields: () => ({
     username: {
       type: new GraphQLNonNull(GraphQLString)
@@ -88,7 +88,7 @@ const UserCreateInputType = new GraphQLInputObjectType({
 // UserUpdateInputType for mutation
 const UserUpdateInputType = new GraphQLInputObjectType({
   name: 'UserUpdateInputType',
-  description: 'This represent an user',
+  description: 'Used for update user',
   fields: () => ({
     about: {
       type: GraphQLString
@@ -99,7 +99,7 @@ const UserUpdateInputType = new GraphQLInputObjectType({
 // UserChangeEmailInputType for mutation
 const UserChangeEmailInputType = new GraphQLInputObjectType({
   name: 'UserChangeEmailInputType',
-  description: 'This represent an user',
+  description: 'Used for email change',
   fields: () => ({
     email: {
       type: new GraphQLNonNull(GraphQLString)
@@ -110,7 +110,7 @@ const UserChangeEmailInputType = new GraphQLInputObjectType({
 // UserChangePassInputType for mutation
 const UserChangePassInputType = new GraphQLInputObjectType({
   name: 'UserChangePassInputType',
-  description: 'This represent an user',
+  description: 'Used for change pass',
   fields: () => ({
     password: {
       type: new GraphQLNonNull(GraphQLString)

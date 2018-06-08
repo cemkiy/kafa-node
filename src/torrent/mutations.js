@@ -33,6 +33,9 @@ const TorrentMutationRootType = new GraphQLObjectType({
           .then(function (torrent) {
             return torrent
           })
+          .catch((err) => {
+            throw err
+          })
       }
     },
     updateTorrent: {
@@ -47,9 +50,7 @@ const TorrentMutationRootType = new GraphQLObjectType({
       },
       resolve: function (parent, args, rootValue) {
         let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'privateer'])
-        return torrentModel.findOneAndUpdate(query, {
-          '$set': args.input
-        }, {new: true}).exec()
+        return torrentModel.update(query, args.input)
           .then((torrent) => {
             return torrent
           })
@@ -67,7 +68,7 @@ const TorrentMutationRootType = new GraphQLObjectType({
       },
       resolve: function (parent, args, rootValue) {
         let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'captain', 'privateer'])
-        return torrentModel.findOneAndRemove(query).exec()
+        return torrentModel.findOneAndRemove(query)
           .then(() => {
             return 'deleted'
           })
@@ -79,16 +80,76 @@ const TorrentMutationRootType = new GraphQLObjectType({
     incrementDownloadCount: {
       type: new GraphQLNonNull(torrentTypes.TorrentType),
       args: {
-        input: {
-          type: new GraphQLNonNull(torrentTypes.TorrentIncrementInputType)
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: function (parent, { input }, rootValue) {
-        config.securityPointForCreateSource(rootValue, ['captain', 'buccaneer', 'privateer'])
-        return torrentModel.findOneAndUpdate({
-          torrent_id: input.torrent_id}, {
-          '$inc': {'download_count': 1}
-        }, {new: true})
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['buccaneer', 'captain', 'privateer'])
+        return torrentModel.incrementDownloadCount(query)
+          .then((torrent) => {
+            return torrent
+          })
+          .catch((err) => {
+            throw err
+          })
+      }
+    },
+    addComment: {
+      type: new GraphQLNonNull(torrentTypes.TorrentType),
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        input: {
+          type: new GraphQLNonNull(torrentTypes.CommentInputType)
+        }
+      },
+      resolve: function (parent, args, rootValue) {
+        config.securityPointForCreateSource(rootValue, ['buccaneer', 'captain', 'privateer'])
+        return torrentModel.addComment(args.id, rootValue.user._id, args.input.text)
+          .then((torrent) => {
+            return torrent
+          })
+          .catch((err) => {
+            throw err
+          })
+      }
+    },
+    updateComment: {
+      type: new GraphQLNonNull(torrentTypes.TorrentType),
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        input: {
+          type: new GraphQLNonNull(torrentTypes.CommentInputType)
+        }
+      },
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'buccaneer', 'captain', 'privateer'])
+        return torrentModel.updateComment(query, args.input.comment_id, args.input.text)
+          .then((torrent) => {
+            return torrent
+          })
+          .catch((err) => {
+            throw err
+          })
+      }
+    },
+    deleteComment: {
+      type: new GraphQLNonNull(torrentTypes.TorrentType),
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        input: {
+          type: new GraphQLNonNull(torrentTypes.CommentInputType)
+        }
+      },
+      resolve: function (parent, args, rootValue) {
+        let query = config.securityPointForChangeSource(rootValue, args.id, ['source_owner', 'buccaneer', 'captain', 'privateer'])
+        return torrentModel.removeComment(query, args.comment_id)
           .then((torrent) => {
             return torrent
           })
