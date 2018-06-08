@@ -84,7 +84,7 @@ const TorrentMutationRootType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: function (parent, { input }, rootValue) {
+      resolve: function (parent, args, rootValue) {
         let query = config.securityPointForChangeSource(rootValue, args.id, ['buccaneer', 'captain', 'privateer'])
         return torrentModel.incrementDownloadCount(query)
           .then((torrent) => {
@@ -106,7 +106,7 @@ const TorrentMutationRootType = new GraphQLObjectType({
         }
       },
       resolve: function (parent, args, rootValue) {
-        let query = config.securityPointForChangeSource(rootValue, args.id, ['buccaneer', 'captain', 'privateer'])
+        config.securityPointForCreateSource(rootValue, ['buccaneer', 'captain', 'privateer'])
         return torrentModel.addComment(args.id, rootValue.user._id, args.input.text)
           .then((torrent) => {
             return torrent

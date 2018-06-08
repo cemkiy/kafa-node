@@ -70,14 +70,14 @@ module.exports.update = function (query, input) {
   input.updated_at = new Date()
   return User.findOneAndUpdate(query, {
     '$set': input
-    }, {new: true})
+  }, {new: true})
 }
 
 module.exports.updateById = function (id, input) {
   input.updated_at = new Date()
   return User.findByIdAndUpdate(id, {
     '$set': input
-    }, {new: true})
+  }, {new: true})
 }
 
 module.exports.getById = function (id, callback) {
@@ -95,7 +95,7 @@ module.exports.list = function (filter, callback) {
 
   if (filter.limit) { limit = filter.limit }
 
-  if (filter.page) { skip =  filter.page > 0 ? ( ( filter.page - 1 ) * limit ) : 0 }
+  if (filter.page) { skip = filter.page > 0 ? ((filter.page - 1) * limit) : 0 }
 
   if (filter.sort_field) {
     if (filter.sort_type) {

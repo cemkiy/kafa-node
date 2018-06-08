@@ -36,20 +36,20 @@ module.exports.update = function (query, input) {
   input.updated_at = new Date()
   return Kafa.findOneAndUpdate(query, {
     '$set': input
-    }, {new: true})
+  }, {new: true})
 }
 
 module.exports.updateById = function (id, input) {
   input.updated_at = new Date()
   return Kafa.findByIdAndUpdate(id, {
     '$set': input
-    }, {new: true})
+  }, {new: true})
 }
 
-module.exports.incrementKafaCount = function (user_id, torrent_id) {
+module.exports.incrementKafaCount = function (userId, torrentId) {
   return Kafa.findOneAndUpdate({
-    'user_id': user_id,
-    'torrent_id': torrent_id}, {
+    'user_id': userId,
+    'torrent_id': torrentId}, {
     '$inc': {'kafa_count': 1},
     '$set': {'updated_at': new Date()}
   }, {upsert: true, new: true})
@@ -78,7 +78,7 @@ module.exports.list = function (filter, callback) {
 
   if (filter.limit) { limit = filter.limit }
 
-  if (filter.page) { skip =  filter.page > 0 ? ( ( filter.page - 1 ) * limit ) : 0 }
+  if (filter.page) { skip = filter.page > 0 ? ((filter.page - 1) * limit) : 0 }
 
   if (filter.sort_field) {
     if (filter.sort_type) {
