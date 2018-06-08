@@ -2,11 +2,12 @@
   "name": "kafa-node",
   "version": "0.1.0",
   "description": "kafa backend",
-  "main": "index.js",
+  "main": "server.js",
   "repository": "https://github.com/cemkiy/kafa-node.git",
   "author": "cemkiy <cemekiy@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "nodemon": "nodemon server.js",
     "test": "echo 'travis test'"
   },
   "dependencies": {
@@ -24,5 +25,8 @@
     "mustache": "^2.3.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
   }
 }
