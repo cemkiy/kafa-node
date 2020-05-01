@@ -8,7 +8,9 @@
   "license": "MIT",
   "scripts": {
     "nodemon": "nodemon server.js",
-    "test": "echo 'travis test'"
+    "test": "echo 'travis test'",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -24,9 +26,11 @@
     "mongoose": "^5.0.11",
     "mustache": "^3.0.0",
     "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "nodemon": "^1.17.5"
-  }
+  },
+  "snyk": true
 }
