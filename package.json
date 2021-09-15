@@ -17,7 +17,7 @@
     "express": "^4.16.2",
     "express-graphql": "^0.6.12",
     "graphql": "^14.0.0-rc.1",
-    "gravatar": "^1.6.0",
+    "gravatar": "^1.8.1",
     "jsonwebtoken": "^8.2.0",
     "lodash": "^4.17.12",
     "mailgun.js": "^2.0.1",
